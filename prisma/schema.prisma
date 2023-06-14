@@ -1,0 +1,91 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  email String @unique
+  emailVerified DateTime?
+  image String?
+  hashedPassword String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Patient {
+  id                      String     @id @default(auto()) @map("_id") @db.ObjectId
+  name                    String
+  identity                String    @unique
+  birthDate               DateTime
+  gender                  String
+  phone                   String
+  email                   String    @unique
+  healthInsurance         Boolean
+  healthInsuranceName     String?
+  healthInsuranceNumber   String?
+  information             String?
+  nextConsultation        DateTime?
+
+  address                 String
+  number                  String
+  complement              String?
+  neighborhood            String
+  state                   String
+  postalCode              String
+  city                    String
+
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+
+  consultations           Consultation[]
+}
+
+model Doctor {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  specialty         String
+  crm               String    @unique
+  phone             String
+  email             String    @unique
+  schedule          String?
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  consultations     Consultation[]
+}
+
+model Consultation {
+  id                     String    @id @default(auto()) @map("_id") @db.ObjectId
+  patient                Patient   @relation(fields: [patientId], references: [id])
+  patientId              String    @db.ObjectId
+  doctor                 Doctor    @relation(fields: [doctorId], references: [id])
+  doctorId               String    @db.ObjectId
+  dateTime               DateTime
+  healthInsuranceName    String?
+  healthInsuranceNumber  String?
+  diagnosis              String?
+  treatment              String?
+  amountPaid             String
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+
+  prescriptions          Prescription[]
+}
+
+model Prescription {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  consultation      Consultation   @relation(fields: [consultationId], references: [id])
+  consultationId    String    @db.ObjectId
+  medication        String?
+  dosage            String?
+  frequency         String?
+  instructions      String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+}

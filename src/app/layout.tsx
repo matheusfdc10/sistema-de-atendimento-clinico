@@ -1,5 +1,7 @@
+import AuthContext from '@/context/AuthContext'
 import './globals.css'
 import { Inter } from 'next/font/google'
+import ToastContext from '@/context/ToastContext'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,8 +16,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="pt-br">
+      <body className={inter.className}>
+        <AuthContext>
+          <ToastContext />
+          {children}
+        </AuthContext>
+      </body>
     </html>
   )
 }
