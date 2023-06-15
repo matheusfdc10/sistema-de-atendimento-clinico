@@ -7,6 +7,7 @@ import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import Textarea from "../inputs/Textarea";
+import Select from "../inputs/Select";
 
 type Address = {
     cep: string;
@@ -23,7 +24,7 @@ export interface FormPatient {
     gender: string;
     phone: string;
     email: string;
-    healthInsurance: boolean;
+    healthInsurance: string;
     healthInsuranceName?: string;
     healthInsuranceNumber?: string;
     information?: string;
@@ -38,12 +39,13 @@ export interface FormPatient {
 }
 
 const RegisterPatientForm = () => {
-    const [healthInsurance, setHealthInsurance] = useState<boolean | undefined>(undefined)
+    const [haveHealthPlan, setHaveHealthPlan] = useState<boolean | undefined>(undefined)
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const {
         register,
         handleSubmit,
+        setValue,
         reset,
         formState: {
             errors,
@@ -56,7 +58,7 @@ const RegisterPatientForm = () => {
             gender: '',
             phone: '',
             email: '',
-            healthInsurance: false,
+            healthInsurance: '',
             healthInsuranceName: '',
             healthInsuranceNumber: '',
             information: '',
@@ -167,40 +169,15 @@ const RegisterPatientForm = () => {
                     errors={errors}
                     required
                 />
-                <div className="flex flex-col gap-2">
-                    <label className="
-                        block
-                        text-sm
-                        font-medium
-                        leading-6
-                        text-gray-900"
-                    >
-                        Gênero
-                        <span className="text-rose-500 text-sm font-semibold leading-6 ml-2">{`${errors['gender']?.message !== undefined ? errors['gender']?.message : ''}`}</span>
-                    </label>
-                    <div className="flex-1 flex gap-4">
-                        <Input
-                            id="gender"
-                            type="radio"
-                            value="F"
-                            label="Feminino"
-                            disabled={isLoading}
-                            register={register}
-                            errors={errors}
-                            required
-                        />
-                        <Input
-                            id="gender"
-                            type="radio"
-                            value="M"
-                            label="Masculino"
-                            disabled={isLoading}
-                            register={register}
-                            errors={errors}
-                            required
-                        />
-                    </div>
-                </div>
+                <Select
+                    id="gender"
+                    label="Gênero"
+                    options={['masculino', 'feminino']}
+                    disabled={isLoading}
+                    register={register}
+                    errors={errors}
+                    required
+                />
                 <Input
                     id="nextConsultation"
                     type="datetime-local"
@@ -220,43 +197,20 @@ const RegisterPatientForm = () => {
                 2xl:grid-cols-5
                 gap-6
             ">
-                <div className="flex flex-col gap-5">
-                    <label className="
-                        block
-                        text-sm
-                        font-medium
-                        leading-6
-                        text-gray-900"
-                    >
-                        Possui Plano?
-                        <span className="text-rose-500 text-sm font-semibold leading-6 ml-2">{`${errors['healthInsurance']?.message !== undefined ? errors['healthInsurance']?.message : ''}`}</span>
-                    </label>
-                    <div className="flex-1 flex gap-4">
-                        <Input
-                            id="healthInsurance"
-                            type="radio"
-                            value="true"
-                            label="Sim"
-                            disabled={isLoading}
-                            register={register}
-                            errors={errors}
-                            required
-                            onChange={(e) => setHealthInsurance(e.target.value === 'true')}
-                        />
-                        <Input
-                            id="healthInsurance"
-                            type="radio"
-                            value="false"
-                            label="Não"
-                            disabled={isLoading}
-                            register={register}
-                            errors={errors}
-                            required
-                            onChange={(e) => setHealthInsurance(e.target.value === 'true')}
-                        />
-                    </div>
-                </div>
-                {healthInsurance && (
+                <Select
+                    id="healthInsurance"
+                    label="Possui plano de saúde?"
+                    options={['sim', 'não']}
+                    disabled={isLoading}
+                    register={register}
+                    errors={errors}
+                    required
+                    onChange={(e) => {
+                        const isTrue =  e.target.value === 'sim'
+                        setHaveHealthPlan(isTrue)}
+                    }
+                />
+                {haveHealthPlan && (
                     <>
                         <Input
                             id="healthInsuranceName"
@@ -320,7 +274,6 @@ const RegisterPatientForm = () => {
                     id="postalCode"
                     label="CEP"
                     type="number"
-                    maxLength={8}
                     disabled={isLoading}
                     register={register}
                     errors={errors}
