@@ -71,10 +71,11 @@ const RegisterPatientForm = () => {
             city: '',
         }
     })
+    
 
     const onSubmit: SubmitHandler<FieldValues | FormPatient> = (data) => {
         setIsLoading(true)
-        
+
         axios.post('/api/register/patient', data)
         .then(() => {
             toast.success('Paciente cadastrado!')
