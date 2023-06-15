@@ -3,22 +3,53 @@ import Button from "@/components/buttons/Button";
 import Input from "@/components/inputs/Input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import Textarea from "../inputs/Textarea";
 
+type Address = {
+    cep: string;
+    state: string;
+    city: string;
+    neighborhood: string;
+    street: string;
+}
+
+export interface FormPatient {
+    name: string;
+    identity: string;
+    birthDate: string;
+    gender: string;
+    phone: string;
+    email: string;
+    healthInsurance: boolean;
+    healthInsuranceName?: string;
+    healthInsuranceNumber?: string;
+    information?: string;
+    nextConsultation: string;
+    address: string;
+    number: string;
+    complement?: string;
+    neighborhood: string;
+    state: string;
+    postalCode: string;
+    city: string;
+}
+
 const RegisterPatientForm = () => {
     const [healthInsurance, setHealthInsurance] = useState<boolean | undefined>(undefined)
+    const [postalCode, setPostalCode] = useState('')
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const {
         register,
         handleSubmit,
+        reset,
         formState: {
             errors,
         }
-    } = useForm<FieldValues>({
+    } = useForm<FormPatient | FieldValues>({
         defaultValues: {
             name: '',
             identity: '',
@@ -26,7 +57,7 @@ const RegisterPatientForm = () => {
             gender: '',
             phone: '',
             email: '',
-            healthInsurance: healthInsurance,
+            healthInsurance: false,
             healthInsuranceName: '',
             healthInsuranceNumber: '',
             information: '',
@@ -41,17 +72,42 @@ const RegisterPatientForm = () => {
         }
     })
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        console.log(data)
-        // setIsLoading(true)
-        // axios.post('/api/register/patient', data)
-        // .then(() => {
-        //     toast.success('Paciente cadastrado!')
-        //     router.push('/')
-        // })
-        // .catch(() => toast.error('Algo deu errado!'))
-        // .finally(() => setIsLoading(false))
+    const onSubmit: SubmitHandler<FieldValues | FormPatient> = (data) => {
+        setIsLoading(true)
+        
+        axios.post('/api/register/patient', data)
+        .then(() => {
+            toast.success('Paciente cadastrado!')
+            router.push('/')
+        })
+        .catch(() => toast.error('Algo deu errado!'))
+        .finally(() => setIsLoading(false))
     }
+
+    useEffect(() => {
+        if (postalCode.length === 8) {
+            axios.get(`https://brasilapi.com.br/api/cep/v2/${postalCode}`)
+            .then((response) => response.data)
+            .then((response: Address) => {
+                reset({
+                    address: response.street,
+                    neighborhood: response.neighborhood,
+                    street: response.street,
+                    city: response.city,
+                    state: response.state,
+                })
+            })
+            .catch(() => {})
+        } else {
+            reset({
+                address: '',
+                neighborhood: '',
+                street: '',
+                city: '',
+                state: '',
+            })
+        }
+    }, [postalCode])
 
     return (
         <form 
@@ -264,10 +320,12 @@ const RegisterPatientForm = () => {
                     id="postalCode"
                     label="CEP"
                     type="number"
+                    maxLength={8}
                     disabled={isLoading}
                     register={register}
                     errors={errors}
                     required
+                    getValue={(e) => setPostalCode(e.target.value)}
                 />
                 <Input
                     id="address"

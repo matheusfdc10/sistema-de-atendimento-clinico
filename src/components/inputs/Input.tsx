@@ -7,17 +7,19 @@ import {
     FieldValues,
     UseFormRegister
 } from 'react-hook-form'
+import { FormPatient } from '../forms/RegisterPatientForm';
 
 interface InputProps {
     label: string;
     id: string;
     type?: string;
     required?: boolean;
-    register: UseFormRegister<FieldValues>;
-    errors: FieldErrors;
+    register: UseFormRegister<FieldValues | FormPatient>;
+    errors: FieldErrors<FieldValues>;
     disabled?: boolean;
     value?: string;
-    getValue?: (e: ChangeEvent<HTMLInputElement>) => void
+    getValue?: (e: ChangeEvent<HTMLInputElement>) => void;
+    maxLength?: number; 
 }
 
 const Input: React.FC<InputProps> = ({
@@ -29,7 +31,8 @@ const Input: React.FC<InputProps> = ({
     errors,
     disabled,
     value,
-    getValue
+    getValue,
+    maxLength
 }) => {
     return (
         <>
@@ -70,15 +73,17 @@ const Input: React.FC<InputProps> = ({
                     <input 
                         id={id}
                         type={type}
+                        maxLength={maxLength}
                         autoComplete={id}
                         disabled={disabled}
+                        value={value}
                         {...register(id , { required, onChange(e) {
                             if(getValue) {
                                 getValue(e)
                             }
                         } })}
                         className={clxs(`
-                            form-input
+                            outline-none
                             block
                             w-full
                             rounded-md
@@ -93,11 +98,11 @@ const Input: React.FC<InputProps> = ({
                             placeholder:text-neutral-400
                             focus:ring-2
                             focus:ring-inset
-                            focus:ring-sky-600
                             sm:text-sm
-                            sm:leading-6`,
-                            errors[id] && 'focus:ring-rose-500',
-                            disabled && 'opacity-50 cursor-default'
+                            sm:leading-6
+                            bg-white`,
+                            errors[id] ? 'ring-rose-500 ring-2' : 'focus:ring-sky-600',
+                            disabled && 'bg-neutral-50 cursor-default'
                         )}
                     />
                 </div>

@@ -25,7 +25,7 @@ export async function POST(
             state,
             postalCode,
             city,
-        } = body
+        } = body;
 
         const patient = await prisma.patient.create({
             data: {
@@ -39,7 +39,7 @@ export async function POST(
                 healthInsuranceName,
                 healthInsuranceNumber,
                 information,
-                nextConsultation: new Date(nextConsultation),
+                nextConsultation: nextConsultation ? new Date(nextConsultation) : null,
                 address,
                 number,
                 complement,
