@@ -3,7 +3,7 @@ import Button from "@/components/buttons/Button";
 import Input from "@/components/inputs/Input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import Textarea from "../inputs/Textarea";
@@ -39,7 +39,6 @@ export interface FormPatient {
 
 const RegisterPatientForm = () => {
     const [healthInsurance, setHealthInsurance] = useState<boolean | undefined>(undefined)
-    const [postalCode, setPostalCode] = useState('')
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
     const {
@@ -85,9 +84,9 @@ const RegisterPatientForm = () => {
         .finally(() => setIsLoading(false))
     }
 
-    useEffect(() => {
-        if (postalCode.length === 8) {
-            axios.get(`https://brasilapi.com.br/api/cep/v2/${postalCode}`)
+    const handleGetAddress = useCallback((cep: string) => {
+        if (cep.length === 8) {
+            axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`)
             .then((response) => response.data)
             .then((response: Address) => {
                 reset({
@@ -108,7 +107,7 @@ const RegisterPatientForm = () => {
                 state: '',
             })
         }
-    }, [postalCode])
+    }, [reset])
 
     return (
         <form 
@@ -242,7 +241,7 @@ const RegisterPatientForm = () => {
                             register={register}
                             errors={errors}
                             required
-                            getValue={(e) => setHealthInsurance(e.target.value === 'true')}
+                            onChange={(e) => setHealthInsurance(e.target.value === 'true')}
                         />
                         <Input
                             id="healthInsurance"
@@ -253,7 +252,7 @@ const RegisterPatientForm = () => {
                             register={register}
                             errors={errors}
                             required
-                            getValue={(e) => setHealthInsurance(e.target.value === 'true')}
+                            onChange={(e) => setHealthInsurance(e.target.value === 'true')}
                         />
                     </div>
                 </div>
@@ -326,7 +325,7 @@ const RegisterPatientForm = () => {
                     register={register}
                     errors={errors}
                     required
-                    getValue={(e) => setPostalCode(e.target.value)}
+                    onChange={(e) => handleGetAddress(e.target.value)}
                 />
                 <Input
                     id="address"

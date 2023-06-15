@@ -18,7 +18,7 @@ interface InputProps {
     errors: FieldErrors<FieldValues>;
     disabled?: boolean;
     value?: string;
-    getValue?: (e: ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
     maxLength?: number; 
 }
 
@@ -31,7 +31,7 @@ const Input: React.FC<InputProps> = ({
     errors,
     disabled,
     value,
-    getValue,
+    onChange,
     maxLength
 }) => {
     return (
@@ -44,8 +44,8 @@ const Input: React.FC<InputProps> = ({
                     disabled={disabled}
                     value={value}
                     {...register(id , { required: "*Campo obrigatório", onChange(e) {
-                        if(getValue) {
-                            getValue(e)
+                        if(onChange) {
+                            onChange(e)
                         }
                     } })}
                 />
@@ -78,8 +78,8 @@ const Input: React.FC<InputProps> = ({
                         disabled={disabled}
                         value={value}
                         {...register(id , { required, onChange(e) {
-                            if(getValue) {
-                                getValue(e)
+                            if(onChange) {
+                                onChange(e)
                             }
                         } })}
                         className={clxs(`
