@@ -9,26 +9,31 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 
 const PatientConsultation = () => {
+    const [isLoading, setIsLoading] = useState(false)
     const [doctorId, setDoctorId] = useState('')
     const [patient, setPatient] = useState<Patient | null>(null)
     const [doctors, setDoctors] = useState<Doctor[] | null>(null)
 
     const handleGetPatient = useCallback(async (identity: string) => {
         if (identity.length === 11) {
+            setIsLoading(true)
             axios.get(`/api/obtain/patients/${identity}`)
             .then((response) => response.data)
             .then((data) => setPatient(data))
-            .catch(() => console.log('erro'));
+            .catch(() => console.log('erro'))
+            .finally(() => setIsLoading(false));
         } else {
             setPatient(null)
         }
     }, [patient])
 
     const handleGetDoctor = useCallback(async () => {
+        setIsLoading(true)
         axios.get(`/api/obtain/doctors`)
         .then((response) => response.data)
         .then((data) => setDoctors(data))
-        .catch(() => console.log('erro'));
+        .catch(() => console.log('erro'))
+        .finally(() => setIsLoading(false))
     }, [])
 
     useEffect(() => {
@@ -52,6 +57,7 @@ const PatientConsultation = () => {
                 ">
                     <Input
                         label="Identidade"
+                        disabled={isLoading}
                         onChange={(e) => handleGetPatient(e.target.value)}
                     />
                     {patient && (
@@ -96,6 +102,7 @@ const PatientConsultation = () => {
                         label="Dotor"
                         capitalize
                         value={doctorId}
+                        disabled={isLoading}
                         onChange={(e) => setDoctorId(e.target.value)}
                     />
                 </div>

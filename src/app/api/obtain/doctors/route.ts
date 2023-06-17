@@ -6,6 +6,7 @@ export async function GET(
     request: Request,
 ) {
     try {
+        
         const allDoctors = await getAllDoctors()
 
         return NextResponse.json(allDoctors);

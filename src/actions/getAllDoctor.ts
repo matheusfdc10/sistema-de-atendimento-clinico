@@ -3,6 +3,7 @@ import getSession from './getSession';
 
 export default async function getAllDoctors() {
     try {
+        
         const session = await getSession()
 
         if (!session?.user?.email) {
