@@ -15,7 +15,7 @@ const PatientConsultation = () => {
 
     const handleGetPatient = useCallback(async (identity: string) => {
         if (identity.length === 11) {
-            axios.get(`/api/get/patients/${identity}`)
+            axios.get(`/api/obtain/patients/${identity}`)
             .then((response) => response.data)
             .then((data) => setPatient(data))
             .catch(() => console.log('erro'));
@@ -25,7 +25,7 @@ const PatientConsultation = () => {
     }, [patient])
 
     const handleGetDoctor = useCallback(async () => {
-        axios.get(`/api/get/doctors`)
+        axios.get(`/api/obtain/doctors`)
         .then((response) => response.data)
         .then((data) => setDoctors(data))
         .catch(() => console.log('erro'));
@@ -100,13 +100,7 @@ const PatientConsultation = () => {
                     />
                 </div>
             </div>
-            
-            <div className="flex-1 flex flex-col justify-between transition-all">
-                <Title title="Atendimento" />
-                <div className="mt-3">
-                    <ConsultationPatientForm patient={patient} doctorId={doctorId} />
-                </div>
-            </div>
+            <ConsultationPatientForm patient={patient} doctorId={doctorId} />
         </Container>
     )
 }
