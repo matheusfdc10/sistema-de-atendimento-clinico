@@ -45,6 +45,7 @@ const Input = forwardRef(
                         px-3
                         text-neutral-900
                         shadow-sm
+                        shadow-neutral-500/50
                         ring-1
                         ring-inset
                         ring-neutral-300

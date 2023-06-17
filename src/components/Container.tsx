@@ -9,7 +9,7 @@ const Container: React.FC<ContainerProps> = ({children, title}) => {
             <h1 className='text-center font-bold text-3xl capitalize mb-8'>
                 {title}
             </h1>
-            <div className="flex flex-col flex-1 bg-neutral-200 py-5 px-6 rounded-2xl drop-shadow-[0_0_8px_rgba(23,23,23,0.40)]">
+            <div className="flex flex-col flex-1 bg-neutral-300 py-5 px-6 rounded-2xl drop-shadow-[0_0_8px_rgba(20,20,20,0.50)]">
                 {children}
             </div>
         </div>

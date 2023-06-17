@@ -18,7 +18,7 @@ const Title: React.FC<TitleProps> = ({
                 <div className="w-full border-t-2 border-neutral-400/60" />
             </div>
             <div className="relative flex justify-center text-sm">
-                <span className="font-semibold text-3xl bg-neutral-200 px-4">
+                <span className="font-semibold text-3xl bg-neutral-300 px-4">
                     {title}
                 </span>
             </div>
