@@ -54,46 +54,36 @@ const RegisterDoctorForm = () => {
                 gap-6
             ">
                 <Input
-                    id="name"
                     label="Nome"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("name" , { required: true })}
+                    errors={errors.name}
                 />
                 <Input
-                    id="email"
                     type="email"
                     label="E-mail"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("email" , { required: true })}
+                    errors={errors.email}
                 />
                 <Input
-                    id="phone"
                     type="number"
                     label="Telefone"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("phone" , { required: true })}
+                    errors={errors.phone}
                 />
                 <Input
-                    id="specialty"
                     label="Especialidade"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("specialty" , { required: true })}
+                    errors={errors.specialty}
                 />
                 <Input
-                    id="crm"
                     label="CRM"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("crm" , { required: true })}
+                    errors={errors.crm}
                 />
             </div>
             <div className="flex justify-end">

@@ -8,6 +8,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import Textarea from "../inputs/Textarea";
 import Select from "../inputs/Select";
+import Title from "../Title";
 
 type Address = {
     cep: string;
@@ -45,7 +46,6 @@ const RegisterPatientForm = () => {
     const {
         register,
         handleSubmit,
-        setValue,
         reset,
         formState: {
             errors,
@@ -76,7 +76,7 @@ const RegisterPatientForm = () => {
 
     const onSubmit: SubmitHandler<FieldValues | FormPatient> = (data) => {
         setIsLoading(true)
-
+        
         axios.post('/api/register/patient', data)
         .then(() => {
             toast.success('Paciente cadastrado!')
@@ -126,65 +126,53 @@ const RegisterPatientForm = () => {
                 gap-6
             ">
                 <Input
-                    id="name"
                     label="Nome"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("name" , { required: true })}
+                    errors={errors.name}
                 />
                 <Input
-                    id="email"
                     type="email"
                     label="E-mail"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("email" , { required: true })}
+                    errors={errors.email}
                 />
                 <Input
-                    id="phone"
                     type="number"
                     label="Telefone"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("phone" , { required: true })}
+                    errors={errors.phone}
                 />
                 <Input
-                    id="identity"
                     type="number"
                     label="CPF"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("identity" , { required: true })}
+                    errors={errors.identity}
                 />
                 <Input
-                    id="birthDate"
                     type="date"
                     label="Data de nascimento"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("birthDate" , { required: true })}
+                    errors={errors.birthDate}
                 />
                 <Select
-                    id="gender"
                     label="Gênero"
-                    options={['masculino', 'feminino']}
+                    options={[{label: 'masculino'}, {label: 'feminino'}]}
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("gender" , { required: true })}
+                    errors={errors.gender}
                 />
                 <Input
                     id="nextConsultation"
                     type="datetime-local"
                     label="Próxima consulta"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
+                    {...register("nextConsultation" , { required: false })}
+                    errors={errors.nextConsultation}
                 />
             </div>
             <div className="w-full border-t-2 border-neutral-400/60" />
@@ -200,13 +188,12 @@ const RegisterPatientForm = () => {
                 <Select
                     id="healthInsurance"
                     label="Possui plano de saúde?"
-                    options={['sim', 'não']}
+                    options={[{label: 'sim'}, {label: 'não'}]}
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("healthInsurance" , { required: true })}
+                    errors={errors.healthInsurance}
                     onChange={(e) => {
-                        const isTrue =  e.target.value === 'sim'
+                        const isTrue =  e.target.value === 'sim';
                         setHaveHealthPlan(isTrue)}
                     }
                 />
@@ -216,17 +203,14 @@ const RegisterPatientForm = () => {
                             id="healthInsuranceName"
                             label="Nome do plano"
                             disabled={isLoading}
-                            register={register}
-                            errors={errors}
-                            required
+                            {...register("healthInsuranceName" , { required: true })}
+                            errors={errors.healthInsuranceName}
                         />
                         <Input
-                            id="healthInsuranceNumber"
                             label="Número do plano"
                             disabled={isLoading}
-                            register={register}
-                            errors={errors}
-                            required
+                            {...register("healthInsuranceNumber" , { required: true })}
+                            errors={errors.healthInsuranceNumber}
                         />
                     </>
                 )}
@@ -237,30 +221,13 @@ const RegisterPatientForm = () => {
                 grid-cols-1
             ">
                 <Textarea
-                    id="information"
                     label="Informações"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
+                    {...register("information" , { required: false })}
+                    errors={errors.information}
                 />
             </div>
-            <div className="relative mt-3">
-                <div
-                    className="
-                        absolute
-                        inset-0
-                        flex
-                        items-center
-                    "
-                >
-                    <div className="w-full border-t-2 border-neutral-400/60" />
-                </div>
-                <div className="relative flex justify-center text-sm">
-                    <span className="font-semibold text-3xl bg-neutral-200 px-4">
-                        Endereço
-                    </span>
-                </div>
-            </div>
+            <Title title="Endereço" />
             <div className="
                 grid 
                 grid-cols-1
@@ -271,62 +238,49 @@ const RegisterPatientForm = () => {
                 gap-6
             ">
                 <Input
-                    id="postalCode"
                     label="CEP"
                     type="number"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("postalCode" , { required: true })}
+                    errors={errors.postalCode}
                     onChange={(e) => handleGetAddress(e.target.value)}
                 />
                 <Input
-                    id="address"
                     label="Endereço"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("address" , { required: true })}
+                    errors={errors.address}
                 />
                 <Input
-                    id="number"
                     label="Número"
                     type="number"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("number" , { required: true })}
+                    errors={errors.number}
                 />
                 <Input
-                    id="complement"
                     label="Complemento"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
+                    {...register("complement" , { required: false })}
+                    errors={errors.complement}
                 />
                 <Input
-                    id="neighborhood"
                     label="Bairro"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("neighborhood" , { required: true })}
+                    errors={errors.neighborhood}
                 />
                 <Input
-                    id="city"
                     label="Cidade"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("city" , { required: true })}
+                    errors={errors.city}
                 />
                 <Input
-                    id="state"
                     label="Estado"
                     disabled={isLoading}
-                    register={register}
-                    errors={errors}
-                    required
+                    {...register("state" , { required: true })}
+                    errors={errors.state}
                 />
             </div>
             <div className="flex justify-end">

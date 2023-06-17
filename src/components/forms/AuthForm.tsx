@@ -77,23 +77,19 @@ const AuthForm = () => {
                     className="space-y-6"
                     onSubmit={handleSubmit(onSubmit)}
                 >
-                    <Input 
-                        id="email"
+                    <Input
                         label="E-mail"
                         type="email"
-                        register={register}
-                        errors={errors}
                         disabled={isLoading}
-                        required
+                        {...register("email" , { required: true })}
+                        errors={errors.email}
                     />
-                    <Input 
-                        id="password"
+                    <Input
                         label="Senha"
                         type="password"
-                        register={register}
-                        errors={errors}
                         disabled={isLoading}
-                        required
+                        {...register("password" , { required: true })}
+                        errors={errors.password}
                     />
                     <div>
                         <Button
