@@ -1,4 +1,4 @@
-import getAllDoctors from '@/actions/getAllDoctor';
+import prisma from '@/libs/prismadb'
 import { NextResponse } from 'next/server'
   
 
@@ -7,8 +7,9 @@ export async function GET(
 ) {
     try {
         
-        const allDoctors = await getAllDoctors()
-
+        console.log('4')
+        const allDoctors = await prisma.doctor.findMany()
+        console.log(allDoctors)
         return NextResponse.json(allDoctors);
     } catch(error: any) {
         console.log(error, 'ERROR')

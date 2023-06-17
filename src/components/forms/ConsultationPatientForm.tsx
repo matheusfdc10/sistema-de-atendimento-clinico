@@ -63,7 +63,7 @@ const ConsultationPatientForm: React.FC<ConsultationPatientFormProps> = ({
             healthInsuranceName: patient?.healthInsuranceName,
             healthInsuranceNumber: patient?.healthInsuranceNumber,
         })
-    }, [doctorId, patient])
+    }, [doctorId, patient, reset])
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true)

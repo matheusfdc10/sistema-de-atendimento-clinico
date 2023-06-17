@@ -25,11 +25,11 @@ const PatientConsultation = () => {
         } else {
             setPatient(null)
         }
-    }, [patient])
+    }, [])
 
     const handleGetDoctor = useCallback(async () => {
         setIsLoading(true)
-        axios.get(`/api/obtain/doctors`)
+        axios.get('/api/obtain/doctors', )
         .then((response) => response.data)
         .then((data) => setDoctors(data))
         .catch(() => console.log('erro'))
@@ -38,7 +38,7 @@ const PatientConsultation = () => {
 
     useEffect(() => {
         handleGetDoctor()
-    }, [])
+    }, [handleGetDoctor])
 
     return (
         <Container title="Atendimento ao Paciente">
