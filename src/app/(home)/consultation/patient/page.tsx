@@ -56,7 +56,7 @@ const PatientConsultation = () => {
                     mb-9
                 ">
                     <Input
-                        label="Identidade"
+                        label="CPF"
                         disabled={isLoading}
                         onChange={(e) => handleGetPatient(e.target.value)}
                     />
