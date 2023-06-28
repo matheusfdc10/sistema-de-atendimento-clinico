@@ -68,9 +68,10 @@ const ConsultationPatientForm: React.FC<ConsultationPatientFormProps> = ({
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true)
 
-        axios.post('/api/register/consultation', data)
+        axios.post('/api/consultation', data)
         .then(() => {
             toast.success('Atendimento cadastrado!')
+            router.refresh()
             router.push('/')
         })
         .catch(() => toast.error('Algo deu errado!'))

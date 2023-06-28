@@ -8,16 +8,22 @@ import { Doctor, Patient } from "@prisma/client";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 
-const PatientConsultation = () => {
+interface NewConsultationProps {
+    doctors: Doctor[] | null
+}
+
+const NewConsultation: React.FC<NewConsultationProps> = ({
+    doctors
+}) => {
     const [isLoading, setIsLoading] = useState(false)
     const [doctorId, setDoctorId] = useState('')
     const [patient, setPatient] = useState<Patient | null>(null)
-    const [doctors, setDoctors] = useState<Doctor[] | null>(null)
+    // const [doctors, setDoctors] = useState<Doctor[] | null>(null)
 
     const handleGetPatient = useCallback(async (identity: string) => {
         if (identity.length === 11) {
             setIsLoading(true)
-            axios.get(`/api/obtain/patients/${identity}`)
+            axios.get(`/api/patient/${identity}`)
             .then((response) => response.data)
             .then((data) => setPatient(data))
             .catch(() => console.log('erro'))
@@ -27,22 +33,43 @@ const PatientConsultation = () => {
         }
     }, [])
 
-    const handleGetDoctor = useCallback(async () => {
-        setIsLoading(true)
-        axios.get('/api/obtain/doctors', )
-        .then((response) => response.data)
-        .then((data) => setDoctors(data))
-        .catch(() => console.log('erro'))
-        .finally(() => setIsLoading(false))
-    }, [])
+    // const handleGetDoctor = useCallback(() => {
+    //     const headers = {
+    //         'Cache-Control': 'no-cache',
+    //         'Pragma': 'no-cache',
+    //         'Expires': '0',
+    //         'x-custom-header': Math.random().toString(), // Valor aleatório para cada requisição
+    //       };
+    //     setIsLoading(true)
+    //     axios.get('/api/obtain/doctors', {
+    //         headers
+    //     })
+    //     .then((response) => console.log(response))
+    //     .catch(() => console.log('erro'))
+    //     .finally(() => setIsLoading(false))
+    // }, [setDoctors])
 
-    useEffect(() => {
-        handleGetDoctor()
-    }, [handleGetDoctor])
+    // useEffect(() => {
+    //     const headers = {
+    //         'Cache-Control': 'no-cache',
+    //         'Pragma': 'no-cache',
+    //         'Expires': '0',
+    //         'x-custom-header': Math.random().toString(), // Valor aleatório para cada requisição
+    //       };
+    //     setIsLoading(true)
+    //     axios.get('/api/obtain/doctors', {
+    //         headers
+    //     })
+    //     .then((response) => response.data)
+    //     .then((data) => setDoctors(data))
+    //     .catch(() => console.log('erro'))
+    //     .finally(() => setIsLoading(false))
+    // }, [])
 
     return (
         <Container title="Atendimento ao Paciente">
             <div>
+                {/* <button onClick={handleGetDoctor}>click</button> */}
                 <Title title="Paciente" />
                 <div className="
                     grid 
@@ -112,11 +139,7 @@ const PatientConsultation = () => {
     )
 }
 
-export default PatientConsultation;
-
-
-
-
+export default NewConsultation;
 
 
 

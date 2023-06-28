@@ -39,6 +39,8 @@ const LiDropdown: React.FC<LiDropdownProps> = ({
                 bg-sky-500
                 hover:bg-sky-600
                 focus-visible:outline-sky-600
+                shadow-sm
+                shadow-neutral-500/50
                 "
             >
                 {text}

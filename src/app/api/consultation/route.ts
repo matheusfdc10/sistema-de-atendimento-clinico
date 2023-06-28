@@ -1,3 +1,4 @@
+import getSession from '@/actions/getSession';
 import prisma from '@/libs/prismadb'
 import { NextResponse } from 'next/server'
 
@@ -5,6 +6,13 @@ export async function POST(
     request: Request
 ) {
     try {
+        // const session = await getSession()
+
+        // if (!session?.user?.email) {
+        //     // return new NextResponse(null, { status: 401 })
+        //     return NextResponse.json(null)
+        // }
+        
         const body = await request.json();
         const {
             patientId,
@@ -32,7 +40,7 @@ export async function POST(
 
         return NextResponse.json(consultation);
     } catch(error: any) {
-        console.log(error, 'REGISTRATION_ERROR')
+        console.log(error)
         return new NextResponse('Algo deu errado!', { status: 500 })
     }
 }

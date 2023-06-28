@@ -3,7 +3,7 @@ import Button from "@/components/buttons/Button";
 import Input from "@/components/inputs/Input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import Textarea from "../inputs/Textarea";
@@ -76,10 +76,11 @@ const RegisterPatientForm = () => {
 
     const onSubmit: SubmitHandler<FieldValues | FormPatient> = (data) => {
         setIsLoading(true)
-        
-        axios.post('/api/register/patient', data)
+    
+        axios.post('/api/patient', data)
         .then(() => {
             toast.success('Paciente cadastrado!')
+            router.refresh()
             router.push('/')
         })
         .catch(() => toast.error('Algo deu errado!'))
@@ -109,8 +110,8 @@ const RegisterPatientForm = () => {
                 state: '',
             })
         }
-    }, [reset])
-
+    }, [reset])  
+    
     return (
         <form 
             onSubmit={handleSubmit(onSubmit)}
@@ -158,6 +159,7 @@ const RegisterPatientForm = () => {
                     disabled={isLoading}
                     {...register("birthDate" , { required: true })}
                     errors={errors.birthDate}
+                    dateMax
                 />
                 <Select
                     label="Gênero"
@@ -173,6 +175,7 @@ const RegisterPatientForm = () => {
                     disabled={isLoading}
                     {...register("nextConsultation" , { required: false })}
                     errors={errors.nextConsultation}
+                    dateMin
                 />
             </div>
             <div className="w-full border-t-2 border-neutral-400/60" />

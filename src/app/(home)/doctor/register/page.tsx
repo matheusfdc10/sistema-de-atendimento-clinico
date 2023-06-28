@@ -1,8 +1,7 @@
-import Container from "@/components/Container";
+import Container from "@/components/Container"
 import RegisterDoctorForm from "@/components/forms/RegisterDoctorForm";
 
-const RegisterDoctor = () => {
-
+const DoctorRegister = () => {
     return (
         <Container title="Cadastrar Médico">
             <RegisterDoctorForm />
@@ -10,4 +9,4 @@ const RegisterDoctor = () => {
     )
 }
 
-export default RegisterDoctor;
+export default DoctorRegister;

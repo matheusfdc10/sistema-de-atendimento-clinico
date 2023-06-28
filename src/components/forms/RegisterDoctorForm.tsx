@@ -30,9 +30,10 @@ const RegisterDoctorForm = () => {
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true)
 
-        axios.post('/api/register/doctor', data)
+        axios.post('/api/doctor', data)
         .then(() => {
             toast.success('Médico cadastrado!')
+            router.refresh()
             router.push('/')
         })
         .catch(() => toast.error('Algo deu errado!'))
