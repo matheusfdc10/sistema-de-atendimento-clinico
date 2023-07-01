@@ -11,6 +11,7 @@ import  Form  from "./Form";
 import { FormPatient } from "./forms/RegisterPatientForm";
 import { handleCPFMask, handlePhoneMask } from "@/utils/masks";
 import InputTextMask from "./inputs/InputTextMask";
+import Table from "./Table";
 
 const ListPatient = () => {
     const route = useRouter()
@@ -109,6 +110,9 @@ const ListPatient = () => {
                         errors={errors.nextConsultation}
                     />
                 </Form.Container>
+                {(patients?.length === 0) && (
+                    <span className="text-center">Nenhum paciente encontrado</span>
+                )}
                 <Form.ContainerActions>
                     <Button
                         disabled={isLoading}
@@ -118,30 +122,30 @@ const ListPatient = () => {
                     </Button>
                 </Form.ContainerActions>
             </Form.Root>
-            {(patients) && (
-                <div className="mt-6 overflow-auto rounded-md border border-neutral-400">
-                    <table className="w-full text-left">
-                        <thead className="uppercase bg-neutral-400">
-                            <tr>
-                                <th scope="col" className="px-6 py-3">Nome</th>
-                                <th scope="col" className="px-6 py-3">CPF</th>
-                                <th scope="col" className="px-6 py-3">Email</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-neutral-400/40 transition-all">
+            
+            {!!(patients?.length) && (
+                <div className="mt-6">
+                    <Table.Root>
+                        <Table.Thead>
+                            <Table.Tr>
+                                <Table.Th scope="coll">Nome</Table.Th>
+                                <Table.Th scope="coll">CPF</Table.Th>
+                                <Table.Th scope="coll">Email</Table.Th>
+                            </Table.Tr>
+                        </Table.Thead>
+                        <Table.Tbody>
                             {patients?.map((patient) => (
-                                <tr 
+                                <Table.Tr 
                                     key={patient.id}
                                     onClick={() => route.push(`/patient/${patient.id}`)}
-                                    className="cursor-pointer hover:bg-neutral-400/20"
                                 >
-                                    <td scope="col" className="px-6 py-3">{patient.name}</td>
-                                    <td scope="col" className="px-6 py-3">{patient.identity}</td>
-                                    <td scope="col" className="px-6 py-3">{patient.email}</td>
-                                </tr>
+                                    <Table.Td>{patient.name}</Table.Td>
+                                    <Table.Td>{patient.identity}</Table.Td>
+                                    <Table.Td>{patient.email}</Table.Td>
+                                </Table.Tr>
                             ))}
-                        </tbody>
-                    </table>
+                        </Table.Tbody>
+                    </Table.Root>
                 </div>
             )}
         </>

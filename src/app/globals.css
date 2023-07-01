@@ -16,3 +16,13 @@ body {
   bg-neutral-50
   text-neutral-950
 }
+
+::-webkit-scrollbar {
+  background-color: #a3a3a3;
+  height: 10px;
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #858585;
+}

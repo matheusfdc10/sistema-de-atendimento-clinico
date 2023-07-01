@@ -88,6 +88,7 @@ const AuthForm = () => {
                     <Input
                         label="Senha"
                         type="password"
+                        autoComplete="password"
                         disabled={isLoading}
                         {...register("password" , { required: true })}
                         errors={errors.password}
