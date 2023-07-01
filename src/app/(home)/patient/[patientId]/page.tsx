@@ -1,5 +1,6 @@
 import getPatient from "@/actions/getPatient";
 import Container from "@/components/Container"
+import UpdatePatientForm from "@/components/forms/UpdatePatientForm";
 
 interface IParams {
     patientId: string;
@@ -10,7 +11,7 @@ const Patient = async ({ params }: {params: IParams}) => {
 
     return (
         <Container title={`Paciente ${patient?.name}`}>
-
+            <UpdatePatientForm patient={patient!} />
         </Container>
     )
 }

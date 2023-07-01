@@ -5,12 +5,12 @@ import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form"
 import { toast } from "react-hot-toast"
-import DropdownSelectMenu from "../DropdownSelectMenu"
 import Button from "../buttons/Button"
 import Input from "../inputs/Input"
 import { Patient } from "@prisma/client"
 import Textarea from "../inputs/Textarea"
 import Title from "../Title"
+import Form from "../Form"
 
 export interface ConsultationPatientFormType {
     patientId: string;
@@ -55,7 +55,6 @@ const ConsultationPatientForm: React.FC<ConsultationPatientFormProps> = ({
         }
     })
 
-
     useEffect(() => {
         reset({
             patientId: patient?.id,
@@ -81,37 +80,22 @@ const ConsultationPatientForm: React.FC<ConsultationPatientFormProps> = ({
     return (
         <> 
             {doctorId && patient && (
-                <div className="flex-1 flex flex-col justify-between transition-all">
+                <>
                     <Title title="Atendimento" />
-                    <form 
-                        onSubmit={handleSubmit(onSubmit)}
-                        className="flex-1 flex flex-col justify-between gap-9 mt-3"
-                    >
-                        <div>
-                            <Textarea
-                                label="Diagnóstico"
-                                disabled={isLoading}
-                                {...register("diagnosis" , { required: false })}
-                                errors={errors?.diagnosis}
-                            />
-                        </div>
-                        <div>
-                            <Textarea
-                                label="Tratamento"
-                                disabled={isLoading}
-                                {...register("treatment" , { required: false })}
-                                errors={errors?.treatment}
-                            />
-                        </div>
-                        <div className="
-                            grid 
-                            grid-cols-1
-                            sm:grid-cols-2
-                            lg:grid-cols-3
-                            xl:grid-cols-4
-                            2xl:grid-cols-5
-                            gap-6
-                        ">
+                    <Form.Root onSubmit={handleSubmit(onSubmit)}>
+                        <Textarea
+                            label="Diagnóstico"
+                            disabled={isLoading}
+                            {...register("diagnosis" , { required: false })}
+                            errors={errors?.diagnosis}
+                        />
+                        <Textarea
+                            label="Tratamento"
+                            disabled={isLoading}
+                            {...register("treatment" , { required: false })}
+                            errors={errors?.treatment}
+                        />
+                        <Form.Container>
                             {/* <DropdownSelectMenu
                                 id="doctorId"
                                 label="Dotor"
@@ -137,17 +121,17 @@ const ConsultationPatientForm: React.FC<ConsultationPatientFormProps> = ({
                                 {...register("amountPaid" , { required: true })}
                                 errors={errors?.amountPaid}
                             />
-                        </div>
-                        <div className="flex justify-end">
+                        </Form.Container>
+                        <Form.ContainerActions>
                             <Button
                                 disabled={isLoading}
                                 type="submit"
                             >
                                 Cadastrar
                             </Button>
-                        </div>
-                    </form>
-                </div>
+                        </Form.ContainerActions>
+                    </Form.Root>
+                </>
             )}
         </>
     )

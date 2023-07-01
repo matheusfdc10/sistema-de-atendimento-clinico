@@ -89,7 +89,7 @@ const Select = forwardRef(
                     {options.map((option, index) => (
                         <option
                             key={index}
-                            value={option.value || option.label}
+                            value={option.value ? option.value : option.label}
                             className={capitalize ? 'capitalize' : ''}
                         >
                             {option.label}

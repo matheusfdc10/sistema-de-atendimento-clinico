@@ -66,7 +66,7 @@ export async function POST(
         const patient = await prisma.patient.findMany({
             where: query,
             orderBy: {
-                createdAt: 'desc'
+                updatedAt: 'desc'
             }
         })
 

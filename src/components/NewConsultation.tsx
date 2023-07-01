@@ -6,7 +6,9 @@ import Input from "@/components/inputs/Input";
 import Select, { Option } from "@/components/inputs/Select";
 import { Doctor, Patient } from "@prisma/client";
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
+import InputTextMask from "./inputs/InputTextMask";
+import { toast } from "react-hot-toast";
 
 interface NewConsultationProps {
     doctors: Doctor[] | null
@@ -25,7 +27,10 @@ const NewConsultation: React.FC<NewConsultationProps> = ({
             setIsLoading(true)
             axios.get(`/api/patient/${identity}`)
             .then((response) => response.data)
-            .then((data) => setPatient(data))
+            .then((data) => {
+                setPatient(data)
+                !data && toast.error('CPF não encontrado')
+            })
             .catch(() => console.log('erro'))
             .finally(() => setIsLoading(false));
         } else {
@@ -82,10 +87,11 @@ const NewConsultation: React.FC<NewConsultationProps> = ({
                     mt-3
                     mb-9
                 ">
-                    <Input
+                    <InputTextMask
                         label="CPF"
+                        mask="999.999.999-99"
                         disabled={isLoading}
-                        onChange={(e) => handleGetPatient(e.target.value)}
+                        onChange={(e) => handleGetPatient(e.target.value.replace(/\D/g, ''))}
                     />
                     {patient && (
                         <>

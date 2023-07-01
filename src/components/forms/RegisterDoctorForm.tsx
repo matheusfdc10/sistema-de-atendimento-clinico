@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import Form from "../Form";
+import InputTextMask from "../inputs/InputTextMask";
 
 const RegisterDoctorForm = () => {
     const router = useRouter()
@@ -28,9 +30,13 @@ const RegisterDoctorForm = () => {
     })
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        const formattedData = {
+            ...data,
+            phone: data.phone.replace(/\D/g, '')
+        }
         setIsLoading(true)
 
-        axios.post('/api/doctor', data)
+        axios.post('/api/doctor', formattedData)
         .then(() => {
             toast.success('Médico cadastrado!')
             router.refresh()
@@ -41,23 +47,12 @@ const RegisterDoctorForm = () => {
     }
 
     return (
-        <form 
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex-1 flex flex-col justify-between gap-9"
-        >
-            <div className="
-                grid 
-                grid-cols-1
-                sm:grid-cols-2
-                lg:grid-cols-3
-                xl:grid-cols-4
-                2xl:grid-cols-5
-                gap-6
-            ">
+        <Form.Root onSubmit={handleSubmit(onSubmit)}>
+            <Form.Container>
                 <Input
                     label="Nome"
                     disabled={isLoading}
-                    {...register("name" , { required: true })}
+                    {...register("name" , { required: true, minLength: 3 })}
                     errors={errors.name}
                 />
                 <Input
@@ -67,11 +62,15 @@ const RegisterDoctorForm = () => {
                     {...register("email" , { required: true })}
                     errors={errors.email}
                 />
-                <Input
-                    type="number"
+                <InputTextMask
                     label="Telefone"
+                    mask="(99) 99999-9999"
                     disabled={isLoading}
-                    {...register("phone" , { required: true })}
+                    {...register("phone" , {
+                        required: true,
+                        maxLength: 15,
+                        minLength: 15
+                    })}
                     errors={errors.phone}
                 />
                 <Input
@@ -86,16 +85,16 @@ const RegisterDoctorForm = () => {
                     {...register("crm" , { required: true })}
                     errors={errors.crm}
                 />
-            </div>
-            <div className="flex justify-end">
+            </Form.Container>
+            <Form.ContainerActions>
                 <Button
                     disabled={isLoading}
                     type="submit"
                 >
                     Cadastrar
                 </Button>
-            </div>
-        </form>
+            </Form.ContainerActions>
+        </Form.Root>
     )
 }
 

@@ -36,6 +36,10 @@ const Textarea = forwardRef(
                 <textarea
                     ref={ref}
                     {...props}
+                    onChange={(e) => {
+                        e.target.style.height = '100px';
+                        e.target.style.height = `${e.target.scrollHeight}px`;
+                    }}
                     disabled={disabled}
                     className={clxs(`
                         outline-none

@@ -2,11 +2,15 @@
 import { useState } from "react";
 import Button from "./buttons/Button";
 import Input from "./inputs/Input";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Patient } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import  Form  from "./Form";
+import { FormPatient } from "./forms/RegisterPatientForm";
+import { handleCPFMask, handlePhoneMask } from "@/utils/masks";
+import InputTextMask from "./inputs/InputTextMask";
 
 const ListPatient = () => {
     const route = useRouter()
@@ -15,11 +19,12 @@ const ListPatient = () => {
     const {
         register,
         handleSubmit,
+        setValue,
         reset,
         formState: {
             errors,
         }
-    } = useForm<FieldValues>({
+    } = useForm<FormPatient>({
         defaultValues: {
             name: '',
             identity: '',
@@ -32,52 +37,47 @@ const ListPatient = () => {
         }
     })
 
-    const onSubmit: SubmitHandler<FieldValues> = (data) => {
-        setIsLoading(true)
+    const onSubmit: SubmitHandler<FormPatient> = (data) => {
+        const formattedData: FormPatient = {
+            ...data,
+            identity: data.identity?.replace(/\D/g, ''),
+            phone: data.phone?.replace(/\D/g, ''),
+        }
 
-        axios.post('/api/patient/search', data)
-        .then((response) => setPatients(response.data))
+        setIsLoading(true)
+        axios.post('/api/patient/search', formattedData)
+        .then((response) => {
+            setPatients(response.data)
+            !response.data?.length && toast.error('Nenhum paciente encontrado')
+        })
         .catch(() => toast.error('Algo deu errado!'))
         .finally(() => setIsLoading(false))
     }
 
     return (
         <>
-            <form
-                onSubmit={handleSubmit(onSubmit)}
-                className={`
-                    flex-1
-                    flex
-                    flex-col
-                    justify-between 
-                    gap-16
-                `}
-            >
-                <div className="
-                    grid 
-                    grid-cols-1
-                    sm:grid-cols-2
-                    lg:grid-cols-3
-                    xl:grid-cols-4
-                    2xl:grid-cols-5
-                    gap-6
-                ">
+            <Form.Root onSubmit={handleSubmit(onSubmit)}>
+                <Form.Container>
                     <Input
                         label="Nome"
                         disabled={isLoading}
-                        {...register("name" , { required: false })}
+                        {...register("name" , { required: false , minLength: 3})}
                         errors={errors.name}
                     />
                     <Input
-                        type="number"
                         label="CPF"
                         disabled={isLoading}
-                        {...register("identity" , { required: false })}
+                        {...register("identity", {
+                            required: false,
+                            maxLength: 14,
+                            minLength: 14,
+                        })}
+                        onChange={(e) => setValue('identity', handleCPFMask(e.target.value))}
                         errors={errors.identity}
                     />
-                    <Input
-                        type="number"
+                    <InputTextMask
                         label="Número do plano"
+                        mask="9999999999999999999999999999999"
                         disabled={isLoading}
                         {...register("healthInsuranceNumber" , { required: false })}
                         errors={errors.healthInsuranceNumber}
@@ -90,10 +90,14 @@ const ListPatient = () => {
                         errors={errors.email}
                     />
                     <Input
-                        type="number"
                         label="Telefone"
                         disabled={isLoading}
-                        {...register("phone" , { required: false })}
+                        {...register("phone" , {
+                            required: false,
+                            maxLength: 15,
+                            minLength: 15
+                        })}
+                        onChange={(e) => setValue('phone', handlePhoneMask(e.target.value))}
                         errors={errors.phone}
                     />
                     <Input
@@ -104,18 +108,17 @@ const ListPatient = () => {
                         {...register("nextConsultation" , { required: false })}
                         errors={errors.nextConsultation}
                     />
-                </div>
-                <div className="self-end">
+                </Form.Container>
+                <Form.ContainerActions>
                     <Button
                         disabled={isLoading}
                         type="submit"
                     >
                         Buscar
                     </Button>
-                </div>
-                {/* <div className="w-full border-t-2 border-neutral-400/60" /> */}
-            </form>
-            {(patients && patients?.length) && (
+                </Form.ContainerActions>
+            </Form.Root>
+            {(patients) && (
                 <div className="mt-6 overflow-auto rounded-md border border-neutral-400">
                     <table className="w-full text-left">
                         <thead className="uppercase bg-neutral-400">

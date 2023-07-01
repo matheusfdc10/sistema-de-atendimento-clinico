@@ -2,23 +2,29 @@ import prisma from '@/libs/prismadb'
 import { getSession } from 'next-auth/react';
 import { NextResponse } from 'next/server'
 
+interface IParams {
+    identityId: string;
+}
+  
 export async function GET(
     request: Request,
+  { params }: { params: IParams }
 ) {
     try {
-        const session = await getSession()
+        const { identityId } = params;
+        // const session = await getSession()
 
-        if (!session?.user?.email) {
-            return NextResponse.json(null)
-        }
+        // if (!session?.user?.email && !identity) {
+        //     return NextResponse.json(null)
+        // }
 
-        const patients = await prisma.patient.findMany({
-            orderBy: {
-                createdAt: 'desc'
+        const patient = await prisma.patient.findUnique({
+            where: {
+                identity: identityId
             }
         })
 
-        return NextResponse.json(patients);
+        return NextResponse.json(patient);
     } catch(error: any) {
         console.log(error)
         return NextResponse.json(null)
@@ -26,17 +32,17 @@ export async function GET(
 }
 
 
-export async function POST(
-    request: Request
+export async function PUT(
+    request: Request,
+  { params }: { params: IParams }
 ) {
     try {
         // const session = await getSession()
-
-        // if (!session?.user?.email) {
-        //     // return new NextResponse(null, { status: 401 })
+        
+        // if (!session?.user?.email && !identity) {
         //     return NextResponse.json(null)
         // }
-        
+        const { identityId } = params;
         const body = await request.json();
         const {
             name,
@@ -59,7 +65,10 @@ export async function POST(
             city,
         } = body;
 
-        const patient = await prisma.patient.create({
+        const patient = await prisma.patient.update({
+            where: {
+                id: identityId
+            },
             data: {
                 name,
                 identity,
@@ -85,6 +94,6 @@ export async function POST(
         return NextResponse.json(patient);
     } catch(error: any) {
         console.log(error)
-        return new NextResponse('Algo deu errado!', { status: 500 })
+        return NextResponse.json(null)
     }
 }

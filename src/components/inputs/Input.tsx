@@ -11,11 +11,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
   dateMax?: boolean;
   dateMin?: boolean;
+  hidden?: boolean;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { label, errors, disabled, dateMax, dateMin, ...props },
+    { label, errors, disabled, dateMax, dateMin, hidden, ...props },
     ref
   ) => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -50,7 +51,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     }, [ref]);
 
     return (
-      <div>
+      <div className={`${hidden && 'hidden'}`}>
         <label className="block text-sm font-medium leading-6 text-gray-900">
           {label}
         </label>
