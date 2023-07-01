@@ -23,6 +23,7 @@ export const config = {
     "/api/doctor/:path*",
     "/api/patient",
     "/api/patient/:path*",
+    "/api/patient/search",
     "/api/consultation",
   ]
 }
