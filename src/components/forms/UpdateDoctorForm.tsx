@@ -1,31 +1,36 @@
 'use client'
-import Button from "@/components/buttons/Button";
-import Input from "@/components/inputs/Input";
+
+import { Doctor } from "@prisma/client";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import Form from "../Form";
+import Input from "../inputs/Input";
 import InputTextMask from "../inputs/InputTextMask";
+import Button from "../buttons/Button";
 
-const RegisterDoctorForm = () => {
+interface UpdateDoctorFormProps {
+    doctor: Doctor,
+}
+
+const UpdateDoctorForm: React.FC<UpdateDoctorFormProps> = ({
+    doctor
+}) => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
-
     const {
         register,
         handleSubmit,
+        reset,
         formState: {
             errors,
         }
     } = useForm<FieldValues>({
         defaultValues: {
-            name: '',
-            email: '',
-            phone: '',
-            specialty: '',
-            crm: '',
+            ...doctor,
+            phone: doctor.phone.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3'),
         }
     })
 
@@ -36,15 +41,19 @@ const RegisterDoctorForm = () => {
         }
         setIsLoading(true)
 
-        axios.post('/api/doctor', formattedData)
+        axios.put(`/api/doctor/${data.id}`, formattedData)
         .then(() => {
-            toast.success('Médico cadastrado!')
+            toast.success('Médico atualizado!')
             router.refresh()
             router.push('/')
         })
         .catch(() => toast.error('Algo deu errado!'))
         .finally(() => setIsLoading(false))
     }
+
+    useEffect(() => {
+        reset()
+    }, [reset])
 
     return (
         <Form.Root onSubmit={handleSubmit(onSubmit)}>
@@ -92,11 +101,11 @@ const RegisterDoctorForm = () => {
                     disabled={isLoading}
                     type="submit"
                 >
-                    Cadastrar
+                    Atualizar
                 </Button>
             </Form.ContainerActions>
         </Form.Root>
     )
 }
 
-export default RegisterDoctorForm;
+export default UpdateDoctorForm;

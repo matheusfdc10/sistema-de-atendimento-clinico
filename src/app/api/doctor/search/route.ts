@@ -1,5 +1,4 @@
 import prisma from '@/libs/prismadb'
-import { getSession } from 'next-auth/react';
 import { NextResponse } from 'next/server'
 
 
@@ -11,13 +10,10 @@ export async function POST(
         
         const {
             name,
-            identity,
-            birthDate,
-            gender,
+            crm,
+            specialty,
             phone,
             email,
-            healthInsuranceNumber,
-            nextConsultation,
         } = body;
         // const session = await getSession()
 
@@ -35,16 +31,8 @@ export async function POST(
             }
         }
 
-        if(identity) {
-            query.identity = identity
-        }
-
-        if(birthDate) {
-            query.birthDate = new Date(birthDate)
-        }
-
-        if(gender) {
-            query.gender = gender
+        if(crm) {
+            query.crm = crm
         }
 
         if(phone) {
@@ -58,22 +46,21 @@ export async function POST(
             }
         }
 
-        if(healthInsuranceNumber) {
-            query.healthInsuranceNumber = healthInsuranceNumber
+        if(specialty) {
+            query.specialty = {
+                contains: specialty,
+                mode: 'insensitive'
+            }
         }
 
-        if(nextConsultation) {
-            query.nextConsultation = new Date(nextConsultation)
-        }
-
-        const patient = await prisma.patient.findMany({
+        const doctoes = await prisma.doctor.findMany({
             where: query,
             orderBy: {
                 updatedAt: 'desc'
             }
         })
 
-        return NextResponse.json(patient);
+        return NextResponse.json(doctoes);
     } catch(error: any) {
         console.log(error)
         return NextResponse.json(null)

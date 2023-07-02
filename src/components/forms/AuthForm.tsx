@@ -81,6 +81,7 @@ const AuthForm = () => {
                     <Input
                         label="E-mail"
                         type="email"
+                        lowercase
                         disabled={isLoading}
                         {...register("email" , { required: true })}
                         errors={errors.email}

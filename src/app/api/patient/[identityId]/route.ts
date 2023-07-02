@@ -94,6 +94,6 @@ export async function PUT(
         return NextResponse.json(patient);
     } catch(error: any) {
         console.log(error)
-        return NextResponse.json(null)
+        return new NextResponse('Algo deu errado!', { status: 500 })
     }
 }

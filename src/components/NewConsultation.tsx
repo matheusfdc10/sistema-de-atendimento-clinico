@@ -1,7 +1,7 @@
 'use client'
 import Container from "@/components/Container";
 import Title from "@/components/Title";
-import ConsultationPatientForm from "@/components/forms/ConsultationPatientForm";
+import RegisterConsultationForm from "@/components/forms/RegisterConsultationForm";
 import Input from "@/components/inputs/Input";
 import Select, { Option } from "@/components/inputs/Select";
 import { Doctor, Patient } from "@prisma/client";
@@ -140,7 +140,7 @@ const NewConsultation: React.FC<NewConsultationProps> = ({
                     />
                 </div>
             </div>
-            <ConsultationPatientForm patient={patient} doctorId={doctorId} />
+            <RegisterConsultationForm patient={patient} doctorId={doctorId} />
         </Container>
     )
 }

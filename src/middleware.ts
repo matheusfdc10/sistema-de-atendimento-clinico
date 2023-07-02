@@ -21,6 +21,7 @@ export const config = {
 
     "/api/doctor",
     "/api/doctor/:path*",
+    "/api/doctor/search",
     "/api/patient",
     "/api/patient/:path*",
     "/api/patient/search",

@@ -86,6 +86,7 @@ const ListPatient = () => {
                     <Input
                         type="email"
                         label="E-mail"
+                        lowercase
                         disabled={isLoading}
                         {...register("email" , { required: false })}
                         errors={errors.email}

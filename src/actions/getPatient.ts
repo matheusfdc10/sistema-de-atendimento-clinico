@@ -26,7 +26,7 @@ export default async function getPatient(id: string
 ) {
     try {
         const session = await getSession()
-        if (!session?.user?.email) {
+        if (!session?.user?.email && id) {
             return null
         }
 

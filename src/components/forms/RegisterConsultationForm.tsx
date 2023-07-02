@@ -12,7 +12,7 @@ import Textarea from "../inputs/Textarea"
 import Title from "../Title"
 import Form from "../Form"
 
-export interface ConsultationPatientFormType {
+export interface RegisterConsultationFormType {
     patientId: string;
     doctorId: string;
     dateTime: string;
@@ -23,13 +23,13 @@ export interface ConsultationPatientFormType {
     amountPaid: string;
 }
 
-interface ConsultationPatientFormProps {
+interface RegisterConsultationFormFormProps {
     doctorId: string;
     patient: Patient | null;
 }
 
 
-const ConsultationPatientForm: React.FC<ConsultationPatientFormProps> = ({
+const RegisterConsultationForm: React.FC<RegisterConsultationFormFormProps> = ({
     doctorId,
     patient
 }) => {
@@ -137,4 +137,4 @@ const ConsultationPatientForm: React.FC<ConsultationPatientFormProps> = ({
     )
 }
 
-export default ConsultationPatientForm;
+export default RegisterConsultationForm;

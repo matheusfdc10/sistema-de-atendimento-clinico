@@ -371,6 +371,7 @@ const RegisterPatientForm = () => {
                 <Input
                     type="email"
                     label="E-mail"
+                    lowercase
                     disabled={isLoading}
                     {...register("email" , { required: true })}
                     errors={errors.email}
