@@ -1,11 +1,11 @@
 import getPatients from "@/actions/getPatient";
 import Container from "@/components/Container"
-import ListPatient from "@/components/ListPatient";
+import SearchPatients from "@/components/SearchPatients";
 
 const Patients = () => {
     return (
         <Container title="Pacientes">
-            <ListPatient />
+            <SearchPatients />
         </Container>
     )
 }

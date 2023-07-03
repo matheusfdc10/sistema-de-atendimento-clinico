@@ -131,7 +131,6 @@ const NewConsultation: React.FC<NewConsultationProps> = ({
                 ">
                     <Select
                         options={selectDoctor(doctors)}
-                        placeholder="ola"
                         label="Dotor"
                         capitalize
                         value={doctorId}
@@ -155,7 +154,7 @@ export default NewConsultation;
 
 
 
-const selectDoctor = (doctors: Doctor[] | null) => {
+export const selectDoctor = (doctors: Doctor[] | null) => {
     const option: Option[] = []
 
     doctors?.map((doctor) => {

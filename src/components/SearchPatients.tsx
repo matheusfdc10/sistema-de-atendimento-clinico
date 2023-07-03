@@ -13,7 +13,7 @@ import { handleCPFMask, handlePhoneMask } from "@/utils/masks";
 import InputTextMask from "./inputs/InputTextMask";
 import Table from "./Table";
 
-const ListPatient = () => {
+const SearchPatients = () => {
     const route = useRouter()
     const [patients, setPatients] = useState<Patient[] | null>(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -153,4 +153,4 @@ const ListPatient = () => {
     )
 }
 
-export default ListPatient;
+export default SearchPatients;

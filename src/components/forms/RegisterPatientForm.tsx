@@ -512,8 +512,7 @@ const RegisterPatientForm = () => {
                     {...register("city" , { required: true })}
                     errors={errors.city}
                 />
-                <InputTextMask
-                    mask="aa"
+                <Input
                     label="Estado"
                     uppercase
                     disabled={isLoading}

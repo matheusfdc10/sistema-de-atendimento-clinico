@@ -12,7 +12,7 @@ import { toast } from "react-hot-toast";
 import { Doctor } from "@prisma/client";
 import Table from "./Table";
 
-const ListDoctor = () => {
+const SearchDoctors = () => {
     const router = useRouter()
     const [doctors, setDoctors] = useState<Doctor[] | null>(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -133,4 +133,4 @@ const ListDoctor = () => {
     )
 }
 
-export default ListDoctor;
+export default SearchDoctors;

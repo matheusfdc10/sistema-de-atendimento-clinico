@@ -12,12 +12,13 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   dateMax?: boolean;
   dateMin?: boolean;
   hidden?: boolean;
-  lowercase?: boolean
+  lowercase?: boolean;
+  uppercase?: boolean;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { label, errors, disabled, dateMax, dateMin, hidden, lowercase, ...props },
+    { label, errors, disabled, dateMax, dateMin, hidden, lowercase, uppercase, ...props },
     ref
   ) => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -85,7 +86,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               bg-white`,
               errors ? 'ring-rose-500 ring-2' : 'focus:ring-sky-600',
               disabled && 'bg-neutral-50 cursor-default',
-              lowercase && 'lowercase'
+              lowercase && 'lowercase',
+              uppercase && 'uppercase',
             )}
             disabled={disabled}
           />
