@@ -19,6 +19,8 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
     disabled?: boolean;
     options: Option[];
     capitalize?: boolean;
+    defaultLabel?: string;
+    defaultDisabled?: boolean;
 }
 
 const Select = forwardRef(
@@ -29,6 +31,8 @@ const Select = forwardRef(
     options,
     capitalize,
     children,
+    defaultLabel,
+    defaultDisabled,
     ...props 
 }: SelectProps, ref: Ref<HTMLSelectElement>) => {
     return (
@@ -56,7 +60,6 @@ const Select = forwardRef(
                     className={clxs(`
                         flex-1
                         appearance-none
-                        cursor-pointer
                         outline-none
                         block
                         w-full
@@ -77,15 +80,17 @@ const Select = forwardRef(
                         sm:leading-6
                         bg-white`,
                         errors ? 'ring-rose-500 ring-2' : 'focus:ring-sky-600',
-                        disabled && 'bg-neutral-50 cursor-default'
+                        disabled ? 'opacity-80 cursor-not-allowed' : 'cursor-pointer',
                     )}
                 >
-                    <option
-                        value=''
-                        disabled
-                    >
-                        Escolha uma opção
-                    </option>
+                    {(defaultLabel) && (
+                        <option
+                            value=""
+                            disabled={!defaultDisabled}
+                        >
+                            {defaultLabel}
+                        </option>
+                    )}
                     {options.map((option, index) => (
                         <option
                             key={index}

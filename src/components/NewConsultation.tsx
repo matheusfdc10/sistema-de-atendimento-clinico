@@ -103,7 +103,7 @@ const NewConsultation: React.FC<NewConsultationProps> = ({
                             <Input
                                 label="Idade"
                                 disabled
-                                value={calculateAge(new Date(patient.birthDate)) + ' anos'}
+                                value={calculateAge(new Date(patient.birthDate))}
                             />
                         </>
                     )}
@@ -136,6 +136,7 @@ const NewConsultation: React.FC<NewConsultationProps> = ({
                         value={doctorId}
                         disabled={isLoading}
                         onChange={(e) => setDoctorId(e.target.value)}
+                        defaultLabel="Selecione um médico"
                     />
                 </div>
             </div>
@@ -169,19 +170,37 @@ export const selectDoctor = (doctors: Doctor[] | null) => {
 
 
 
-function calculateAge(dateOfBirth: Date): number {
+export function calculateAge(dateOfBirth: Date): string {
     const currentDate: Date = new Date();
     const currentYear: number = currentDate.getFullYear();
     const birthYear: number = dateOfBirth.getFullYear();
-  
-    let age: number = currentYear - birthYear;
-  
     const currentMonth: number = currentDate.getMonth();
     const birthMonth: number = dateOfBirth.getMonth();
+    const currentDay: number = currentDate.getDate();
+    const birthDay: number = dateOfBirth.getDate();
   
-    // Check if the birth month and day have already occurred in the current year
-    if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDate.getDate() < dateOfBirth.getDate())) {
-      age--;
+    let age: string;
+  
+    // Calculate the difference in years and months
+    const yearDiff: number = currentYear - birthYear;
+    const monthDiff: number = currentMonth - birthMonth;
+  
+    if (yearDiff === 0 && monthDiff === 0) {
+      age = "menos de 1 mês";
+    } else if (yearDiff === 0) {
+      age = `${monthDiff} meses`;
+    } else if (yearDiff === 1 && monthDiff < 0) {
+      age = `${12 - birthMonth + currentMonth} meses`;
+    } else if (yearDiff === 1 && monthDiff === 0 && currentDay < birthDay) {
+      age = `${12 - birthMonth + currentMonth} meses`;
+    } else if (yearDiff === 1) {
+      age = "1 ano";
+    } else if (yearDiff > 1 && monthDiff < 0) {
+      age = `${yearDiff - 1} anos e ${12 - birthMonth + currentMonth} meses`;
+    } else if (yearDiff > 1 && monthDiff === 0 && currentDay < birthDay) {
+      age = `${yearDiff - 1} anos e ${12 - birthMonth + currentMonth} meses`;
+    } else {
+      age = `${yearDiff} anos`;
     }
   
     return age;

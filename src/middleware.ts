@@ -10,6 +10,7 @@ export const config = {
   matcher: [
     "/",
     "/consultation",
+    "/consultation/:path*",
     "/consultation/register",
     "/doctor",
     "/doctor/:path*",
@@ -26,5 +27,7 @@ export const config = {
     "/api/patient/:path*",
     "/api/patient/search",
     "/api/consultation",
+    "/api/consultation/:path*",
+    "/api/consultation/search",
   ]
 }

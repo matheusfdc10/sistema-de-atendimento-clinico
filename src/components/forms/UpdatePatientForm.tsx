@@ -153,6 +153,7 @@ const UpdatePatientForm: React.FC<UpdatePatientFormProps> = ({
                     disabled={isLoading}
                     {...register("gender" , { required: true })}
                     errors={errors.gender}
+                    defaultLabel="Selecione um gênero"
                 />
                 <Input
                     id="nextConsultation"
@@ -172,6 +173,7 @@ const UpdatePatientForm: React.FC<UpdatePatientFormProps> = ({
                     disabled={isLoading}
                     {...register("healthInsurance" , { required: true })}
                     errors={errors.healthInsurance}
+                    defaultLabel="Selecione uma opção"
                     onChange={(e) => {
                         setValue('healthInsurance', e.target.value)
                         if((e.target.value === 'não')) {

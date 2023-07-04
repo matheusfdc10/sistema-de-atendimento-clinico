@@ -38,7 +38,6 @@ const InputTextMask: React.FC<InputTextMaskProps> = forwardRef<HTMLInputElement,
               className={clxs(`
                 flex-1
                 appearance-none
-                cursor-pointer
                 outline-none
                 block
                 w-full
@@ -60,7 +59,7 @@ const InputTextMask: React.FC<InputTextMaskProps> = forwardRef<HTMLInputElement,
                 bg-white`,
                 uppercase ? 'uppercase': '',
                 errors ? 'ring-rose-500 ring-2' : 'focus:ring-sky-600',
-                disabled && 'bg-neutral-50 cursor-default'
+                disabled ? 'opacity-80 cursor-not-allowed' : 'cursor-text',
               )}
               disabled={disabled}
             />

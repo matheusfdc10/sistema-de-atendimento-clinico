@@ -141,7 +141,7 @@ const SearchPatients = () => {
                                     onClick={() => route.push(`/patient/${patient.id}`)}
                                 >
                                     <Table.Td>{patient.name}</Table.Td>
-                                    <Table.Td>{patient.identity}</Table.Td>
+                                    <Table.Td>{handleCPFMask(patient.identity)}</Table.Td>
                                     <Table.Td>{patient.email}</Table.Td>
                                 </Table.Tr>
                             ))}

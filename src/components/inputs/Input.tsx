@@ -64,7 +64,6 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             className={clxs(`
               flex-1
               appearance-none
-              cursor-pointer
               outline-none
               block
               w-full
@@ -85,7 +84,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               sm:leading-6
               bg-white`,
               errors ? 'ring-rose-500 ring-2' : 'focus:ring-sky-600',
-              disabled && 'bg-neutral-50 cursor-default',
+              disabled ? 'opacity-80 cursor-not-allowed' : 'cursor-text',
               lowercase && 'lowercase',
               uppercase && 'uppercase',
             )}

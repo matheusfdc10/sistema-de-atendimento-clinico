@@ -95,6 +95,8 @@ const SearchConsultation: React.FC<SearchConsultationProps> = ({
                         disabled={isLoading}
                         {...register("doctorId" , { required: false })}
                         errors={errors.doctorId}
+                        defaultLabel="Selecione um médico"
+                        defaultDisabled
                     />
                     <Input
                         label="Especialidade"
