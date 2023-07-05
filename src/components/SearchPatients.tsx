@@ -12,8 +12,8 @@ import { FormPatient } from "./forms/RegisterPatientForm";
 import { handleCPFMask, handlePhoneMask } from "@/utils/masks";
 import InputTextMask from "./inputs/InputTextMask";
 import Table from "./Table";
-// import Link from "next/link";
-// import { FaUserEdit } from "react-icons/fa";
+import Link from "next/link";
+import { FaUserEdit } from "react-icons/fa";
 
 const SearchPatients = () => {
     const route = useRouter()
@@ -144,11 +144,11 @@ const SearchPatients = () => {
                                     <Table.Td>{handleCPFMask(patient.identity)}</Table.Td>
                                     <Table.Td>{patient.email}</Table.Td>
                                     <Table.Td>
-                                        {/* <div className="flex gap-6 items-center">
+                                        <div className="flex gap-6 items-center">
                                             <Link title="Editar" href={`/patient/${patient.id}`}>
                                                 <FaUserEdit className="text-2xl text-sky-500 hover:text-sky-600 cursor-pointer"/>
                                             </Link>
-                                        </div> */}
+                                        </div>
                                     </Table.Td>
                                 </Table.Tr>
                             ))}

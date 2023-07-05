@@ -16,8 +16,8 @@ import InputTextMask from "./inputs/InputTextMask";
 import { FullConsultationType } from "@/types";
 import Table from "./Table";
 import { formatDateTime } from "@/utils/format";
-// import Link from "next/link";
-// import { FaEdit } from "react-icons/fa";
+import Link from "next/link";
+import { FaEdit } from "react-icons/fa";
 
 interface SearchConsultationProps {
     doctors: Doctor[] | null
@@ -181,11 +181,11 @@ const SearchConsultation: React.FC<SearchConsultationProps> = ({
                                     <Table.Td>{consultation.doctor.name}</Table.Td>
                                     <Table.Td>{formatDateTime(consultation.dateTime)}</Table.Td>
                                     <Table.Td>
-                                        {/* <div className="flex gap-6 items-center">
+                                        <div className="flex gap-6 items-center">
                                             <Link title="Editar" href={`/consultation/${consultation.id}`}>
                                                 <FaEdit className="text-2xl text-sky-500 hover:text-sky-600 cursor-pointer"/>
                                             </Link>
-                                        </div> */}
+                                        </div>
                                     </Table.Td>
                                 </Table.Tr>
                             ))}

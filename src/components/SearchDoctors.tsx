@@ -11,8 +11,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Doctor } from "@prisma/client";
 import Table from "./Table";
-// import Link from "next/link";
-// import { FaUserEdit } from 'react-icons/fa'
+import Link from "next/link";
+import { FaUserEdit } from 'react-icons/fa'
 
 const SearchDoctors = () => {
     const router = useRouter()
@@ -124,11 +124,11 @@ const SearchDoctors = () => {
                                     <Table.Td>{doctor.specialty}</Table.Td>
                                     <Table.Td>{doctor.email}</Table.Td>
                                     <Table.Td>
-                                        {/* <div className="flex gap-6 items-center">
+                                        <div className="flex gap-6 items-center">
                                             <Link title="Editar" href={`/doctor/${doctor.id}`}>
                                                 <FaUserEdit className="text-2xl text-sky-500 hover:text-sky-600 cursor-pointer"/>
                                             </Link>
-                                        </div> */}
+                                        </div>
                                     </Table.Td>
                                 </Table.Tr>
                             ))}
