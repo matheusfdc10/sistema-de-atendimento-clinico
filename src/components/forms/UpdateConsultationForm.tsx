@@ -28,10 +28,13 @@ const UpdateConsultationForm: React.FC<UpdateConsultationFormProps> = ({
 }) => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
+    const [isHealthInsurance, setIsHealthInsurance] = useState(!!consultation.healthInsuranceName)
     const {
         register,
         handleSubmit,
         reset,
+        watch,
+        setValue,
         formState: {
             errors,
         }
@@ -106,25 +109,40 @@ const UpdateConsultationForm: React.FC<UpdateConsultationFormProps> = ({
                     value={consultation.patient.information}
                 />
             )}
-            {consultation?.healthInsuranceName && (
-                <>
-                    <Title title="Plano de saúde"/>
-                    <Form.Container>
-                        <Input
-                            label="Nome"
-                            disabled={isLoading}
-                            {...register("healthInsuranceName" , { required: false })}
-                            errors={errors.healthInsuranceName}
-                        />
-                        <Input
-                            label="Número"
-                            disabled={isLoading}
-                            {...register("healthInsuranceNumber" , { required: false })}
-                            errors={errors.healthInsuranceNumber}
-                        />
-                    </Form.Container>
-                </>
-            )}
+            <Title title="Plano de saúde"/>
+            <Form.Container>
+                <Select
+                    label="Possui plano de saúde?"
+                    options={[{label: 'sim'}, {label: 'não'}]}
+                    value={isHealthInsurance ? 'sim' : 'não'}
+                    disabled={isLoading}
+                    onChange={(e) => {
+                        if((e.target.value === 'não')) {
+                            setIsHealthInsurance(false)
+                            setValue('healthInsuranceName', '')
+                            setValue('healthInsuranceNumber', '')
+                        } else {
+                            setIsHealthInsurance(true)
+                            setValue('healthInsuranceName', consultation.healthInsuranceName)
+                            setValue('healthInsuranceNumber', consultation.healthInsuranceNumber)
+                        }
+                    }}
+                />
+                <Input
+                    label="Nome"
+                    disabled={isLoading}
+                    hidden={!isHealthInsurance}
+                    {...register("healthInsuranceName" , { required: isHealthInsurance })}
+                    errors={errors.healthInsuranceName}
+                />
+                <Input
+                    label="Número"
+                    disabled={isLoading}
+                    hidden={!isHealthInsurance}
+                    {...register("healthInsuranceNumber" , { required: isHealthInsurance })}
+                    errors={errors.healthInsuranceNumber}
+                />
+            </Form.Container>
             <Title title="Médico"/>
             <Form.Container>
                 <Select

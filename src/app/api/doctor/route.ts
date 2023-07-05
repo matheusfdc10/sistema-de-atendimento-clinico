@@ -1,5 +1,6 @@
 import prisma from '@/libs/prismadb'
 import { NextResponse } from 'next/server'
+import bcrypt from 'bcrypt'
 
 export async function GET(
     request: Request,
@@ -38,11 +39,14 @@ export async function POST(
             crm,
             phone,
             email,
+            password
         } = body
 
         if (!name || !specialty || !crm || !phone || !email) {
             return new NextResponse('Informações ausentes', { status: 400 })
         }
+
+        const hashedPassword = await bcrypt.hash(password, 12)
 
         const doctor = await prisma.doctor.create({
             data: {
@@ -51,6 +55,13 @@ export async function POST(
                 crm,
                 phone,
                 email,
+                user: {
+                    create: {
+                        email,
+                        name,
+                        hashedPassword
+                    }
+                }
             }
         })
 

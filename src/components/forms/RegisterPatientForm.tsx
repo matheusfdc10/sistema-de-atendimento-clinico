@@ -69,6 +69,7 @@ export interface FormPatient {
 const RegisterPatientForm = () => {
     const router = useRouter()
     const [isLoading, setIsLoading] = useState(false)
+    const [isCPF, setIsCPF] = useState<string | null>(null)
     const {
         register,
         handleSubmit,
@@ -126,6 +127,7 @@ const RegisterPatientForm = () => {
 
     const handleGetAddress = useCallback((cep: string) => {
         if (cep.length === 9) {
+            setIsLoading(true)
             axios.get(`https://brasilapi.com.br/api/cep/v2/${cep}`)
             .then((response) => response.data)
             .then((response: Address) => {
@@ -135,229 +137,31 @@ const RegisterPatientForm = () => {
                 setValue('state', response.state)
             })
             .catch(() => {})
+            .finally(() => setIsLoading(false))
         } else {
             setValue('address', '')
             setValue('neighborhood', '')
             setValue('city', '')
             setValue('state', '')
         }
-    }, [setValue])  
+    }, [setValue]);
+
+    const handleGetPatient = useCallback(async (identity: string) => {
+        if (identity.length === 11) {
+            setIsLoading(true)
+            axios.get(`/api/patient/${identity}`)
+            .then((response) => response.data)
+            .then((data) => {
+                data && setIsCPF('Já cadastrado')
+            })
+            .catch(() => console.log('erro'))
+            .finally(() => setIsLoading(false));
+        } else {
+            setIsCPF(null)
+        }
+    }, [])
     
     return (
-        <>
-        {/* <form 
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex-1 flex flex-col justify-between gap-9"
-        >
-            <div className="
-                grid 
-                grid-cols-1
-                sm:grid-cols-2
-                lg:grid-cols-3
-                xl:grid-cols-4
-                2xl:grid-cols-5
-                gap-6
-            ">
-                <Input
-                    label="Nome"
-                    disabled={isLoading}
-                    {...register("name" , { required: true })}
-                    errors={errors.name}
-                />
-                <Input
-                    type="email"
-                    label="E-mail"
-                    disabled={isLoading}
-                    {...register("email" , { required: true })}
-                    errors={errors.email}
-                />
-                <Input
-                    label="Telefone"
-                    disabled={isLoading}
-                    {...register("phone" , {
-                        required: true,
-                        maxLength: 15,
-                        minLength: 15
-                    })}
-                    onChange={(e) => setValue('phone', handlePhoneMask(e.target.value))}
-                    errors={errors.phone}
-                />
-                <Input
-                    label="CPF"
-                    disabled={isLoading}
-                    {...register("identity", {
-                        required: true,
-                        maxLength: 14,
-                        minLength: 14,
-                    })}
-                    onChange={(e) => setValue('identity', handleCPFMask(e.target.value))}
-                    errors={errors.identity}
-                />
-                <Input
-                    type="date"
-                    label="Data de nascimento"
-                    disabled={isLoading}
-                    {...register("birthDate" , { required: true })}
-                    errors={errors.birthDate}
-                    dateMax
-                />
-                <Select
-                    label="Gênero"
-                    options={[{label: 'masculino'}, {label: 'feminino'}]}
-                    disabled={isLoading}
-                    {...register("gender" , { required: true })}
-                    errors={errors.gender}
-                />
-                <Input
-                    id="nextConsultation"
-                    type="datetime-local"
-                    label="Próxima consulta"
-                    disabled={isLoading}
-                    {...register("nextConsultation" , { required: false })}
-                    errors={errors.nextConsultation}
-                    dateMin
-                />
-            </div>
-            <div className="w-full border-t-2 border-neutral-400/60" />
-            <div className="
-                grid 
-                grid-cols-1
-                sm:grid-cols-2
-                lg:grid-cols-3
-                xl:grid-cols-4
-                2xl:grid-cols-5
-                gap-6
-            ">
-                <Select
-                    label="Possui plano de saúde?"
-                    options={[{label: 'sim'}, {label: 'não'}]}
-                    disabled={isLoading}
-                    {...register("healthInsurance" , { required: true })}
-                    errors={errors.healthInsurance}
-                    onChange={(e) => {
-                        setValue('healthInsurance', e.target.value)
-                        if((e.target.value === 'não')) {
-                            setValue('healthInsuranceName', '')
-                            setValue('healthInsuranceNumber', '')
-                        }
-                    }}
-                />
-                <Input
-                    id="healthInsuranceName"
-                    label="Nome do plano"
-                    disabled={isLoading}
-                    hidden={watch('healthInsurance') === 'não'}
-                    {...register("healthInsuranceName" , { required: watch('healthInsurance') === 'sim' })}
-                    errors={errors.healthInsuranceName}
-                />
-                <InputTextMask
-                    label="Número do plano"
-                    mask="999999999999999999999999999999999"
-                    disabled={isLoading}
-                    hidden={watch('healthInsurance') === 'não'}
-                    {...register("healthInsuranceNumber" , { required: watch('healthInsurance') === 'sim' })}
-                    errors={errors.healthInsuranceNumber}
-                />
-            </div>
-            <div className="w-full border-t-2 border-neutral-400/60" />
-            <div className="
-                grid 
-                grid-cols-1
-            ">
-                <Textarea
-                    label="Informações"
-                    disabled={isLoading}
-                    {...register("information" , { required: false })}
-                    errors={errors.information}
-                />
-            </div>
-            <Title title="Endereço" />
-            <div className="
-                grid 
-                grid-cols-1
-                sm:grid-cols-2
-                lg:grid-cols-3
-                xl:grid-cols-4
-                2xl:grid-cols-5
-                gap-6
-            ">
-                <Input
-                    label="CEP"
-                    disabled={isLoading}
-                    {...register("postalCode" , { 
-                        required: true,
-                        maxLength: 9,
-                        minLength: 9
-                    })}
-                    errors={errors.postalCode}
-                    onChange={(e) => {
-                        handleGetAddress(e.target.value)
-                        setValue('postalCode', handleCEPMask(e.target.value))
-                    }}
-                />
-            </div>
-            <div className="
-                grid 
-                grid-cols-1
-                sm:grid-cols-2
-                lg:grid-cols-3
-                xl:grid-cols-4
-                2xl:grid-cols-5
-                gap-6
-            ">
-                <Input
-                    label="Endereço"
-                    disabled={isLoading}
-                    {...register("address" , { required: true })}
-                    errors={errors.address}
-                />
-                <InputTextMask
-                    label="Número"
-                    mask="9999999"
-                    disabled={isLoading}
-                    {...register("number" , { required: true })}
-                    errors={errors.number}
-                />
-                <Input
-                    label="Complemento"
-                    disabled={isLoading}
-                    {...register("complement" , { required: false })}
-                    errors={errors.complement}
-                />
-                <Input
-                    label="Bairro"
-                    disabled={isLoading}
-                    {...register("neighborhood" , { required: true })}
-                    errors={errors.neighborhood}
-                />
-                <Input
-                    label="Cidade"
-                    disabled={isLoading}
-                    {...register("city" , { required: true })}
-                    errors={errors.city}
-                />
-                <InputTextMask
-                    mask="aa"
-                    label="Estado"
-                    uppercase
-                    disabled={isLoading}
-                    {...register("state" , { 
-                        required: true,
-                        maxLength: 2,
-                        minLength: 2,
-                    })}
-                    errors={errors.state}
-                />
-            </div>
-            <div className="flex justify-end flex-wrap gap-6">
-                <Button
-                    disabled={isLoading}
-                    type="submit"
-                >
-                    Cadastrar
-                </Button>
-            </div>
-        </form> */}
         <Form.Root
             onSubmit={handleSubmit(onSubmit)}
         >
@@ -389,13 +193,17 @@ const RegisterPatientForm = () => {
                 />
                 <Input
                     label="CPF"
+                    textErrors={isCPF}
                     disabled={isLoading}
                     {...register("identity", {
                         required: true,
                         maxLength: 14,
                         minLength: 14,
                     })}
-                    onChange={(e) => setValue('identity', handleCPFMask(e.target.value))}
+                    onChange={(e) => {
+                        setValue('identity', handleCPFMask(e.target.value));
+                        handleGetPatient(e.target.value.replace(/\D/g, ''));
+                    }}
                     errors={errors.identity}
                 />
                 <Input
@@ -534,8 +342,7 @@ const RegisterPatientForm = () => {
                     Cadastrar
                 </Button>
             </Form.ContainerActions>
-        </Form.Root>
-        </>            
+        </Form.Root>   
     )
 }
 

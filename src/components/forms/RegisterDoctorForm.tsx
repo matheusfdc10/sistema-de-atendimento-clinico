@@ -26,6 +26,7 @@ const RegisterDoctorForm = () => {
             phone: '',
             specialty: '',
             crm: '',
+            password: '',
         }
     })
 
@@ -85,6 +86,14 @@ const RegisterDoctorForm = () => {
                     disabled={isLoading}
                     {...register("crm" , { required: true })}
                     errors={errors.crm}
+                />
+                <Input
+                    label="Senha"
+                    type="password"
+                    disabled={isLoading}
+                    autoComplete="password"
+                    {...register("password" , { required: true })}
+                    errors={errors.password}
                 />
             </Form.Container>
             <Form.ContainerActions>

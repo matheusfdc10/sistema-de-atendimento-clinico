@@ -11,6 +11,8 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Doctor } from "@prisma/client";
 import Table from "./Table";
+// import Link from "next/link";
+// import { FaUserEdit } from 'react-icons/fa'
 
 const SearchDoctors = () => {
     const router = useRouter()
@@ -112,17 +114,22 @@ const SearchDoctors = () => {
                                 <Table.Th scope="coll">Nome</Table.Th>
                                 <Table.Th scope="coll">Especialidade</Table.Th>
                                 <Table.Th scope="coll">Email</Table.Th>
+                                <Table.Th scope="coll">{}</Table.Th>
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
                             {doctors?.map((doctor) => (
-                                <Table.Tr 
-                                    key={doctor.id}
-                                    onClick={() => router.push(`/doctor/${doctor.id}`)}
-                                >
+                                <Table.Tr key={doctor.id}>
                                     <Table.Td>{doctor.name}</Table.Td>
                                     <Table.Td>{doctor.specialty}</Table.Td>
                                     <Table.Td>{doctor.email}</Table.Td>
+                                    <Table.Td>
+                                        {/* <div className="flex gap-6 items-center">
+                                            <Link title="Editar" href={`/doctor/${doctor.id}`}>
+                                                <FaUserEdit className="text-2xl text-sky-500 hover:text-sky-600 cursor-pointer"/>
+                                            </Link>
+                                        </div> */}
+                                    </Table.Td>
                                 </Table.Tr>
                             ))}
                         </Table.Tbody>

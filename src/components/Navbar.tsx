@@ -1,7 +1,5 @@
 'use client'
 
-import { signOut } from "next-auth/react";
-import Button from "./buttons/Button";
 import LiDropdown from "./LiDropdown";
 
 const MenuCadastro = [
@@ -45,14 +43,6 @@ const Navbar = () => {
                 <LiDropdown text="Consultar:" itemsDropdown={Menuconsultas}/>
                 <LiDropdown text="Cadastro:" itemsDropdown={MenuCadastro}/>
                 <LiDropdown text="Atendimento:" itemsDropdown={MenuAtendimento}/>
-                <li>
-                    <Button
-                        type="button"
-                        onClick={() => signOut()}
-                    >
-                        sair
-                    </Button>
-                </li>
             </ul>
         </nav>
     )

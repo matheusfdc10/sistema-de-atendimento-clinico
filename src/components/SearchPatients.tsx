@@ -12,6 +12,8 @@ import { FormPatient } from "./forms/RegisterPatientForm";
 import { handleCPFMask, handlePhoneMask } from "@/utils/masks";
 import InputTextMask from "./inputs/InputTextMask";
 import Table from "./Table";
+// import Link from "next/link";
+// import { FaUserEdit } from "react-icons/fa";
 
 const SearchPatients = () => {
     const route = useRouter()
@@ -132,17 +134,22 @@ const SearchPatients = () => {
                                 <Table.Th scope="coll">Nome</Table.Th>
                                 <Table.Th scope="coll">CPF</Table.Th>
                                 <Table.Th scope="coll">Email</Table.Th>
+                                <Table.Th scope="coll">{}</Table.Th>
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
                             {patients?.map((patient) => (
-                                <Table.Tr 
-                                    key={patient.id}
-                                    onClick={() => route.push(`/patient/${patient.id}`)}
-                                >
+                                <Table.Tr key={patient.id}>
                                     <Table.Td>{patient.name}</Table.Td>
                                     <Table.Td>{handleCPFMask(patient.identity)}</Table.Td>
                                     <Table.Td>{patient.email}</Table.Td>
+                                    <Table.Td>
+                                        {/* <div className="flex gap-6 items-center">
+                                            <Link title="Editar" href={`/patient/${patient.id}`}>
+                                                <FaUserEdit className="text-2xl text-sky-500 hover:text-sky-600 cursor-pointer"/>
+                                            </Link>
+                                        </div> */}
+                                    </Table.Td>
                                 </Table.Tr>
                             ))}
                         </Table.Tbody>

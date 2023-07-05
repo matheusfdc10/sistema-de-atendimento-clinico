@@ -35,7 +35,12 @@ export async function PUT(
                 specialty,
                 crm,
                 email,
-                phone
+                phone,
+                user: {
+                    update: {
+                        email
+                    }
+                }
             }
         })
 

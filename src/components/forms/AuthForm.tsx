@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Input from "../inputs/Input";
 import Button from "../buttons/Button";
 import { toast } from "react-hot-toast";
+import axios from "axios";
 
 
 const AuthForm = () => {
@@ -14,6 +15,14 @@ const AuthForm = () => {
     const [isLoading, setIsLoading] = useState(false)
     
     useEffect(() => {
+        // const data = {
+        //     name: 'Matheus Freitas',
+        //     email: 'matheusfdc10@hotmail.com',
+        //     password: '123123'
+        // }
+        // axios.post('/api/user', data)
+        //     .then(response => toast.success('criado com sucesso'))
+        //     .catch((error) => toast.error('erro ao criar'))
         if (session?.status === 'authenticated') {
             router.push('/')
         }
@@ -89,8 +98,8 @@ const AuthForm = () => {
                     <Input
                         label="Senha"
                         type="password"
-                        autoComplete="password"
                         disabled={isLoading}
+                        autoComplete="password"
                         {...register("password" , { required: true })}
                         errors={errors.password}
                     />

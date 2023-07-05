@@ -16,6 +16,8 @@ import InputTextMask from "./inputs/InputTextMask";
 import { FullConsultationType } from "@/types";
 import Table from "./Table";
 import { formatDateTime } from "@/utils/format";
+// import Link from "next/link";
+// import { FaEdit } from "react-icons/fa";
 
 interface SearchConsultationProps {
     doctors: Doctor[] | null
@@ -169,17 +171,22 @@ const SearchConsultation: React.FC<SearchConsultationProps> = ({
                                 <Table.Th scope="coll">Paciente</Table.Th>
                                 <Table.Th scope="coll">Médico</Table.Th>
                                 <Table.Th scope="coll">Dia e hora</Table.Th>
+                                <Table.Th scope="coll">{}</Table.Th>
                             </Table.Tr>
                         </Table.Thead>
                         <Table.Tbody>
                             {consultations?.map((consultation) => (
-                                <Table.Tr 
-                                    key={consultation.id}
-                                    onClick={() => router.push(`/consultation/${consultation.id}`)}
-                                >
+                                <Table.Tr key={consultation.id}>
                                     <Table.Td>{consultation.patient.name}</Table.Td>
                                     <Table.Td>{consultation.doctor.name}</Table.Td>
                                     <Table.Td>{formatDateTime(consultation.dateTime)}</Table.Td>
+                                    <Table.Td>
+                                        {/* <div className="flex gap-6 items-center">
+                                            <Link title="Editar" href={`/consultation/${consultation.id}`}>
+                                                <FaEdit className="text-2xl text-sky-500 hover:text-sky-600 cursor-pointer"/>
+                                            </Link>
+                                        </div> */}
+                                    </Table.Td>
                                 </Table.Tr>
                             ))}
                         </Table.Tbody>

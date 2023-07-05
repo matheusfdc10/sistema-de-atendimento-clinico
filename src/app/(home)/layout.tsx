@@ -1,3 +1,4 @@
+import getCurrentUser from "@/actions/getCurrentUser";
 import Header from "@/components/Header";
 
 export default async function HomeLayout({
@@ -5,9 +6,11 @@ export default async function HomeLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const currentUser = await getCurrentUser()
+
   return (
     <>
-      <Header />
+      <Header role={currentUser?.role} />
       {children}
     </>
   );

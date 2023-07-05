@@ -27,6 +27,7 @@ export async function POST(
                 email,
                 name,
                 hashedPassword,
+                role: 'ADMIN'
             }
         })
 

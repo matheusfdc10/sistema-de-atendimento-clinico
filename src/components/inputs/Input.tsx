@@ -14,11 +14,12 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   hidden?: boolean;
   lowercase?: boolean;
   uppercase?: boolean;
+  textErrors?: string | null;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
   (
-    { label, errors, disabled, dateMax, dateMin, hidden, lowercase, uppercase, ...props },
+    { label, errors, disabled, dateMax, dateMin, hidden, lowercase, uppercase, textErrors, ...props },
     ref
   ) => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -56,6 +57,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       <div className={`${hidden && 'hidden'}`}>
         <label className="block text-sm font-medium leading-6 text-gray-900">
           {label}
+          {textErrors && (
+            <span className="ml-3 text-red-500">
+              {textErrors}
+            </span>
+          )}
         </label>
         <div className="mt-2">
           <input
@@ -83,7 +89,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               sm:text-sm
               sm:leading-6
               bg-white`,
-              errors ? 'ring-rose-500 ring-2' : 'focus:ring-sky-600',
+              errors || textErrors ? 'ring-rose-500 ring-2' : 'focus:ring-sky-600',
               disabled ? 'opacity-80 cursor-not-allowed' : 'cursor-text',
               lowercase && 'lowercase',
               uppercase && 'uppercase',

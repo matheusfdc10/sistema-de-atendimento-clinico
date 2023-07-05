@@ -10,6 +10,7 @@ export async function POST(
         const body = await request.json();
         
         const {
+            id,
             name,
             identity,
             birthDate,
@@ -26,6 +27,10 @@ export async function POST(
         // }
 
         let query: any = {}
+
+        if(id) {
+            query.id = id
+        }
 
         if(name) {
             query.name = {
