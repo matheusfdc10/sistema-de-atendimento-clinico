@@ -56,7 +56,7 @@ const UpdateConsultationForm: React.FC<UpdateConsultationFormProps> = ({
         const formattedData = {
             ...data
         }
-        console.log(new Date('2023-07-06T10:30:00').toISOString())
+        // console.log(new Date('2023-07-06T10:30:00').toISOString())
         setIsLoading(true)
         
         axios.put(`/api/consultation/${data.id}`, formattedData)

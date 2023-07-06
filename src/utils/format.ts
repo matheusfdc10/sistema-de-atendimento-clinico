@@ -2,6 +2,12 @@ import moment from 'moment-timezone';
 
 moment.tz.setDefault('America/Sao_Paulo');
 
+export const momentDate = (date?: Date | string) => {
+    if(date) {
+        return moment(date)
+    }
+    return moment()
+}
 
 export const formatDateTime = (dateTime: Date | null) => {
     if(!dateTime) return ''

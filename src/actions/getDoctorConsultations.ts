@@ -1,5 +1,6 @@
 import prisma from '@/libs/prismadb'
 import getSession from './getSession';
+import { momentDate } from '@/utils/format';
 
 export default async function getDoctorConsultations(doctorId: string) {
     try {
@@ -8,7 +9,8 @@ export default async function getDoctorConsultations(doctorId: string) {
             return null
         }
 
-        const today = new Date();
+        const moment = momentDate()
+        const today = new Date(moment.toDate());
 
         const consultation = await prisma.consultation.findMany({
             where: {

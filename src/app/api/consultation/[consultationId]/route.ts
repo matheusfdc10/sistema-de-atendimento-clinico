@@ -1,4 +1,5 @@
 import prisma from '@/libs/prismadb'
+import { formatDateTime, momentDate } from '@/utils/format';
 import { getSession } from 'next-auth/react';
 import { NextResponse } from 'next/server'
 
@@ -27,6 +28,8 @@ export async function PUT(
             treatment,
             amountPaid,
         } = body
+
+        const data = momentDate(dateTime)
         
         const consultation = await prisma.consultation.update({
             where: {
@@ -34,7 +37,7 @@ export async function PUT(
             },
             data: {
                 doctorId,
-                dateTime: new Date(dateTime),
+                dateTime: data.toDate(),
                 healthInsuranceName,
                 healthInsuranceNumber,
                 diagnosis,
