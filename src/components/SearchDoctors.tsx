@@ -5,7 +5,6 @@ import Form from "./Form";
 import Button from "./buttons/Button";
 import Input from "./inputs/Input";
 import InputTextMask from "./inputs/InputTextMask";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
@@ -15,12 +14,12 @@ import Link from "next/link";
 import { FaUserEdit } from 'react-icons/fa'
 
 const SearchDoctors = () => {
-    const router = useRouter()
     const [doctors, setDoctors] = useState<Doctor[] | null>(null)
     const [isLoading, setIsLoading] = useState(false)
     const {
         register,
         handleSubmit,
+        watch,
         formState: {
             errors,
         }
@@ -50,6 +49,10 @@ const SearchDoctors = () => {
         .catch(() => toast.error('Algo deu errado!'))
         .finally(() => setIsLoading(false))
     }
+
+    const inputs = watch(['name', 'email', 'phone', 'specialty', 'crm'])
+
+    const atLeastOneEntry = inputs.some((input) => input !== '')
     
     return (
         <>
@@ -58,13 +61,13 @@ const SearchDoctors = () => {
                     <Input
                         label="Nome"
                         disabled={isLoading}
-                        {...register("name" , { required: false, minLength: 3 })}
+                        {...register("name" , { required: !atLeastOneEntry, minLength: 3 })}
                         errors={errors.name}
                     />
                     <Input
                         label="Especialidade"
                         disabled={isLoading}
-                        {...register("specialty" , { required: false })}
+                        {...register("specialty" , { required: !atLeastOneEntry })}
                         errors={errors.specialty}
                     />
                     <Input
@@ -72,7 +75,7 @@ const SearchDoctors = () => {
                         label="E-mail"
                         lowercase
                         disabled={isLoading}
-                        {...register("email" , { required: false })}
+                        {...register("email" , { required: !atLeastOneEntry })}
                         errors={errors.email}
                     />
                     <InputTextMask
@@ -80,7 +83,7 @@ const SearchDoctors = () => {
                         mask="(99) 99999-9999"
                         disabled={isLoading}
                         {...register("phone" , {
-                            required: false,
+                            required: !atLeastOneEntry,
                             maxLength: 15,
                             minLength: 15
                         })}
@@ -89,16 +92,19 @@ const SearchDoctors = () => {
                     <Input
                         label="CRM"
                         disabled={isLoading}
-                        {...register("crm" , { required: false })}
+                        {...register("crm" , { required: !atLeastOneEntry })}
                         errors={errors.crm}
                     />
                 </Form.Container>
+                {(!atLeastOneEntry) && (
+                    <span className="text-center text-rose-500 font-medium">Preencha pelo menos um campo</span>
+                )}
                 {(doctors?.length === 0) && (
                     <span className="text-center">Nenhum médico encontrado</span>
                 )}
                 <Form.ContainerActions>
                     <Button
-                        disabled={isLoading}
+                        disabled={isLoading || !atLeastOneEntry}
                         type="submit"
                     >
                         Buscar
@@ -123,8 +129,8 @@ const SearchDoctors = () => {
                                     <Table.Td>{doctor.name}</Table.Td>
                                     <Table.Td>{doctor.specialty}</Table.Td>
                                     <Table.Td>{doctor.email}</Table.Td>
-                                    <Table.Td>
-                                        <div className="flex gap-6 items-center">
+                                    <Table.Td className="w-full">
+                                        <div className="flex gap-6 justify-center items-center">
                                             <Link title="Editar" href={`/doctor/${doctor.id}`}>
                                                 <FaUserEdit className="text-2xl text-sky-500 hover:text-sky-600 cursor-pointer"/>
                                             </Link>

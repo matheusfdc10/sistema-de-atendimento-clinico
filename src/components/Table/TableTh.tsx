@@ -1,7 +1,7 @@
 import { ReactNode, ThHTMLAttributes } from "react"
 
 interface TableThProps extends ThHTMLAttributes<HTMLTableHeaderCellElement> {
-    children: ReactNode;
+    children?: ReactNode;
 }
 
 const TableTh: React.FC<TableThProps> = ({

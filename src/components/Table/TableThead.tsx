@@ -8,7 +8,7 @@ const TableThead: React.FC<TableTheadProps> = ( {
     children
 }) => {
     return (
-        <thead className="uppercase bg-neutral-400">
+        <thead className="uppercase bg-neutral-400/75">
             {children}
         </thead>
     )

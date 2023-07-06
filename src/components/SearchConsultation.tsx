@@ -33,6 +33,7 @@ const SearchConsultation: React.FC<SearchConsultationProps> = ({
         register,
         handleSubmit,
         setValue,
+        watch,
         formState: {
             errors,
         }
@@ -74,6 +75,10 @@ const SearchConsultation: React.FC<SearchConsultationProps> = ({
         .catch(() => toast.error('Algo deu errado!'))
         .finally(() => setIsLoading(false))
     }
+
+    const inputs = watch(['dateTime', 'doctorId', 'doctorSpecialty', 'patientName', 'patientIdentity', 'patientHealthInsuranceNumber', 'patientEmail', 'patientPhone'])
+
+    const atLeastOneEntry = inputs.some((input) => input !== '')
 
     return (
         <>
@@ -153,11 +158,17 @@ const SearchConsultation: React.FC<SearchConsultationProps> = ({
                         errors={errors.patientPhone}
                     />
                 </Form.Container>
+                {(!atLeastOneEntry) && (
+                    <span className="text-center text-rose-500 font-medium">Preencha pelo menos um campo</span>
+                )}
                 {(consultations?.length === 0) && (
                     <span className="text-center">Nenhuma consulta encontrado</span>
                 )}
                 <Form.ContainerActions>
-                    <Button type="submit">
+                    <Button
+                        disabled={isLoading || !atLeastOneEntry}
+                        type="submit"
+                    >
                         Buscar
                     </Button>
                 </Form.ContainerActions>
@@ -180,8 +191,8 @@ const SearchConsultation: React.FC<SearchConsultationProps> = ({
                                     <Table.Td>{consultation.patient.name}</Table.Td>
                                     <Table.Td>{consultation.doctor.name}</Table.Td>
                                     <Table.Td>{formatDateTime(consultation.dateTime)}</Table.Td>
-                                    <Table.Td>
-                                        <div className="flex gap-6 items-center">
+                                    <Table.Td className="w-full">
+                                        <div className="flex gap-6 justify-center items-center">
                                             <Link title="Editar" href={`/consultation/${consultation.id}`}>
                                                 <FaEdit className="text-2xl text-sky-500 hover:text-sky-600 cursor-pointer"/>
                                             </Link>

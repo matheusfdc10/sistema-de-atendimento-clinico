@@ -50,6 +50,16 @@ const RegisterDoctorForm = () => {
     return (
         <Form.Root onSubmit={handleSubmit(onSubmit)}>
             <Form.Container>
+                {/* <Input
+                    label="Data"
+                    type="date"
+                    onChange={(e) => console.log(e.target.value)}
+                />
+                <Input
+                    label="Horário"
+                    type="time"
+                    onChange={(e) => console.log(e.target.value)}
+                /> */}
                 <Input
                     label="Nome"
                     disabled={isLoading}
@@ -60,6 +70,7 @@ const RegisterDoctorForm = () => {
                     type="email"
                     label="E-mail"
                     lowercase
+                    autoComplete="off"
                     disabled={isLoading}
                     {...register("email" , { required: true })}
                     errors={errors.email}
@@ -91,7 +102,7 @@ const RegisterDoctorForm = () => {
                     label="Senha"
                     type="password"
                     disabled={isLoading}
-                    autoComplete="password"
+                    autoComplete="off"
                     {...register("password" , { required: true })}
                     errors={errors.password}
                 />

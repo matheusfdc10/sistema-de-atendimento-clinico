@@ -23,6 +23,7 @@ const SearchPatients = () => {
         register,
         handleSubmit,
         setValue,
+        watch,
         reset,
         formState: {
             errors,
@@ -57,6 +58,10 @@ const SearchPatients = () => {
         .finally(() => setIsLoading(false))
     }
 
+    const inputs = watch(['name', 'identity', 'phone', 'email', 'healthInsuranceNumber', 'nextConsultation'])
+
+    const atLeastOneEntry = inputs.some((input) => input !== '')
+
     return (
         <>
             <Form.Root onSubmit={handleSubmit(onSubmit)}>
@@ -64,14 +69,14 @@ const SearchPatients = () => {
                     <Input
                         label="Nome"
                         disabled={isLoading}
-                        {...register("name" , { required: false , minLength: 3})}
+                        {...register("name" , { required: !atLeastOneEntry , minLength: 3})}
                         errors={errors.name}
                     />
                     <Input
                         label="CPF"
                         disabled={isLoading}
                         {...register("identity", {
-                            required: false,
+                            required: !atLeastOneEntry,
                             maxLength: 14,
                             minLength: 14,
                         })}
@@ -82,7 +87,7 @@ const SearchPatients = () => {
                         label="Número do plano"
                         mask="9999999999999999999999999999999"
                         disabled={isLoading}
-                        {...register("healthInsuranceNumber" , { required: false })}
+                        {...register("healthInsuranceNumber" , { required: !atLeastOneEntry })}
                         errors={errors.healthInsuranceNumber}
                     />
                     <Input
@@ -90,14 +95,14 @@ const SearchPatients = () => {
                         label="E-mail"
                         lowercase
                         disabled={isLoading}
-                        {...register("email" , { required: false })}
+                        {...register("email" , { required: !atLeastOneEntry })}
                         errors={errors.email}
                     />
                     <Input
                         label="Telefone"
                         disabled={isLoading}
                         {...register("phone" , {
-                            required: false,
+                            required: !atLeastOneEntry,
                             maxLength: 15,
                             minLength: 15
                         })}
@@ -109,16 +114,19 @@ const SearchPatients = () => {
                         label="Próxima consulta"
                         dateMin
                         disabled={isLoading}
-                        {...register("nextConsultation" , { required: false })}
+                        {...register("nextConsultation" , { required: !atLeastOneEntry })}
                         errors={errors.nextConsultation}
                     />
                 </Form.Container>
+                {(!atLeastOneEntry) && (
+                    <span className="text-center text-rose-500 font-medium">Preencha pelo menos um campo</span>
+                )}
                 {(patients?.length === 0) && (
                     <span className="text-center">Nenhum paciente encontrado</span>
                 )}
                 <Form.ContainerActions>
                     <Button
-                        disabled={isLoading}
+                        disabled={isLoading || !atLeastOneEntry}
                         type="submit"
                     >
                         Buscar
@@ -143,8 +151,8 @@ const SearchPatients = () => {
                                     <Table.Td>{patient.name}</Table.Td>
                                     <Table.Td>{handleCPFMask(patient.identity)}</Table.Td>
                                     <Table.Td>{patient.email}</Table.Td>
-                                    <Table.Td>
-                                        <div className="flex gap-6 items-center">
+                                    <Table.Td className="w-full">
+                                        <div className="flex gap-6 justify-center items-center">
                                             <Link title="Editar" href={`/patient/${patient.id}`}>
                                                 <FaUserEdit className="text-2xl text-sky-500 hover:text-sky-600 cursor-pointer"/>
                                             </Link>
