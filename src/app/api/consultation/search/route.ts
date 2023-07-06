@@ -95,7 +95,7 @@ export async function POST(
                 doctor: true,
             },
             orderBy: {
-                updatedAt: 'desc'
+                dateTime: 'desc'
             }
         })
 

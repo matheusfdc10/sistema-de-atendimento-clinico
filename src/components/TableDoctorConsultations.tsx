@@ -11,7 +11,6 @@ interface TableDoctorConsultations {
 const TableDoctorConsultations: React.FC<TableDoctorConsultations> = ({
     consultations
 }) => {
-
     return (
         <Table.Root>
             <Table.Thead>
@@ -25,7 +24,7 @@ const TableDoctorConsultations: React.FC<TableDoctorConsultations> = ({
                 {consultations?.map((consultation) => (
                     <Table.Tr key={consultation.id}>
                         <Table.Td>{consultation.patient.name}</Table.Td>
-                        <Table.Td>{formatTime(consultation.dateTime)}</Table.Td>
+                        <Table.Td>{formatTime(new Date(consultation.dateTime))}</Table.Td>
                         <Table.Td className="w-full">
                             <div className="flex gap-6 justify-center items-center">
                                 <Link title="Fixa" href={'/'}>

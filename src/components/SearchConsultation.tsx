@@ -190,7 +190,7 @@ const SearchConsultation: React.FC<SearchConsultationProps> = ({
                                 <Table.Tr key={consultation.id}>
                                     <Table.Td>{consultation.patient.name}</Table.Td>
                                     <Table.Td>{consultation.doctor.name}</Table.Td>
-                                    <Table.Td>{formatDateTime(consultation.dateTime)}</Table.Td>
+                                    <Table.Td>{formatDateTime(new Date(consultation.dateTime))}</Table.Td>
                                     <Table.Td className="w-full">
                                         <div className="flex gap-6 justify-center items-center">
                                             <Link title="Editar" href={`/consultation/${consultation.id}`}>
