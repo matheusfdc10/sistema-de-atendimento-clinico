@@ -27,14 +27,14 @@ export async function PUT(
             treatment,
             amountPaid,
         } = body
-        console.log(new Date(dateTime))
+        
         const consultation = await prisma.consultation.update({
             where: {
                 id: consultationId
             },
             data: {
                 doctorId,
-                dateTime: dateTime,
+                dateTime: new Date(dateTime),
                 healthInsuranceName,
                 healthInsuranceNumber,
                 diagnosis,
