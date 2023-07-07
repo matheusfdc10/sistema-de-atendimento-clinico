@@ -9,6 +9,7 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import InputTextMask from "./inputs/InputTextMask";
 import { toast } from "react-hot-toast";
+import { momentDate } from "@/utils/format";
 
 interface NewConsultationProps {
     doctors: Doctor[] | null
@@ -103,7 +104,7 @@ const NewConsultation: React.FC<NewConsultationProps> = ({
                             <Input
                                 label="Idade"
                                 disabled
-                                value={calculateAge(new Date(patient.birthDate))}
+                                value={calculateAge(momentDate(patient.birthDate).toDate())}
                             />
                         </>
                     )}

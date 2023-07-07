@@ -1,4 +1,5 @@
 import prisma from '@/libs/prismadb'
+import { momentDate } from '@/utils/format';
 import { getSession } from 'next-auth/react';
 import { NextResponse } from 'next/server'
 
@@ -72,7 +73,7 @@ export async function PUT(
             data: {
                 name,
                 identity,
-                birthDate: new Date(birthDate),
+                birthDate: momentDate(birthDate).toDate(),
                 gender,
                 phone,
                 email,
@@ -80,7 +81,7 @@ export async function PUT(
                 healthInsuranceName: healthInsurance === 'sim' ? healthInsuranceName : '',
                 healthInsuranceNumber: healthInsurance === 'sim' ? healthInsuranceNumber : '',
                 information,
-                nextConsultation: nextConsultation ? new Date(nextConsultation) : null,
+                nextConsultation: nextConsultation ? momentDate(nextConsultation).toDate() : null,
                 address,
                 number,
                 complement,

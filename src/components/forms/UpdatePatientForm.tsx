@@ -15,6 +15,7 @@ import Button from "../buttons/Button";
 import InputTextMask from "../inputs/InputTextMask";
 import Form from "../Form";
 import Line from "../Line";
+import { momentDate } from "@/utils/format";
 
 interface UpdatePatientFormProps {
     patient: Patient,
@@ -289,18 +290,20 @@ export function convertDate(dateString: Date | null) {
     if(!dateString) return ''
 
     // Creating a Date object with the provided date string
-    var date = new Date(dateString);
+    var date = momentDate(dateString).format('YYYY-MM-DD');
+
+    return date
   
-    // Extracting the relevant parts of the date
-    var year = date.getFullYear();
-    var month = ("0" + (date.getMonth() + 1)).slice(-2); // Adds a leading zero if necessary
-    var day = ("0" + date.getDate()).slice(-2); // Adds a leading zero if necessary
+    // // Extracting the relevant parts of the date
+    // var year = date.getFullYear();
+    // var month = ("0" + (date.getMonth() + 1)).slice(-2); // Adds a leading zero if necessary
+    // var day = ("0" + date.getDate()).slice(-2); // Adds a leading zero if necessary
 
-    // Constructing the date string
-    var formattedDate = year + "-" + month + "-" + day;
+    // // Constructing the date string
+    // var formattedDate = year + "-" + month + "-" + day;
 
-    // Returning the formatted date
-    return formattedDate;
+    // // Returning the formatted date
+    // return formattedDate;
 }
 
 
@@ -308,20 +311,21 @@ export function convertDateHours(dateString: Date | null) {
     if(!dateString) return ''
 
     // Creating a Date object with the provided date string
-    var date = new Date(dateString);
+    var date = momentDate(dateString).format('YYYY-MM-YY HH:mm');
+    return date
   
-    // Extracting the relevant parts of the date
-    var year = date.getFullYear();
-    var month = ("0" + (date.getMonth() + 1)).slice(-2); // Adds a leading zero if necessary
-    var day = ("0" + date.getDate()).slice(-2); // Adds a leading zero if necessary
+    // // Extracting the relevant parts of the date
+    // var year = date.getFullYear();
+    // var month = ("0" + (date.getMonth() + 1)).slice(-2); // Adds a leading zero if necessary
+    // var day = ("0" + date.getDate()).slice(-2); // Adds a leading zero if necessary
 
-    var hours = ("0" + date.getHours()).slice(-2); // Adds a leading zero if necessary
-    var minutes = ("0" + date.getMinutes()).slice(-2); // Adds a leading zero if necessary
-    var seconds = ("0" + date.getSeconds()).slice(-2); // Adds a leading zero if necessary
+    // var hours = ("0" + date.getHours()).slice(-2); // Adds a leading zero if necessary
+    // var minutes = ("0" + date.getMinutes()).slice(-2); // Adds a leading zero if necessary
+    // var seconds = ("0" + date.getSeconds()).slice(-2); // Adds a leading zero if necessary
 
-    // Constructing the date string
-    var formattedDate = year + "-" + month + "-" + day + " " + hours + ":" + minutes;
+    // // Constructing the date string
+    // var formattedDate = year + "-" + month + "-" + day + " " + hours + ":" + minutes;
 
-    // Returning the formatted date
-    return formattedDate;
+    // // Returning the formatted date
+    // return formattedDate;
 }

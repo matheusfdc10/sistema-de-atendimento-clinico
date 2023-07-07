@@ -1,5 +1,6 @@
 import getSession from '@/actions/getSession';
 import prisma from '@/libs/prismadb'
+import { momentDate } from '@/utils/format';
 import { NextResponse } from 'next/server'
 
 export async function POST(
@@ -34,7 +35,7 @@ export async function POST(
                 diagnosis,
                 treatment,
                 amountPaid,
-                dateTime: new Date(dateTime)
+                dateTime: momentDate(dateTime).toDate()
             }
         })
 

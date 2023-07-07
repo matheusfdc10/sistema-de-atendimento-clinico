@@ -16,6 +16,7 @@ import Line from "../Line";
 import Textarea from "../inputs/Textarea";
 import Select from "../inputs/Select";
 import InputTextMask from "../inputs/InputTextMask";
+import { momentDate } from "@/utils/format";
 
 interface UpdateConsultationFormProps {
     consultation: FullConsultationType;
@@ -56,7 +57,6 @@ const UpdateConsultationForm: React.FC<UpdateConsultationFormProps> = ({
         const formattedData = {
             ...data
         }
-        // console.log(new Date('2023-07-06T10:30:00').toISOString())
         setIsLoading(true)
         
         axios.put(`/api/consultation/${data.id}`, formattedData)
@@ -86,7 +86,7 @@ const UpdateConsultationForm: React.FC<UpdateConsultationFormProps> = ({
                 <Input
                     label="Idade"
                     disabled
-                    value={calculateAge(new Date(consultation.patient.birthDate))}
+                    value={calculateAge(momentDate(consultation.patient.birthDate).toDate())}
                 />
                 <InputTextMask
                     label="Telefone"

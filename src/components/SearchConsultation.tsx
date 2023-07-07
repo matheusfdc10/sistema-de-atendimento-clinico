@@ -15,7 +15,7 @@ import { handleCPFMask, handlePhoneMask } from "@/utils/masks";
 import InputTextMask from "./inputs/InputTextMask";
 import { FullConsultationType } from "@/types";
 import Table from "./Table";
-import { formatDateTime } from "@/utils/format";
+import { formatDateTime, momentDate } from "@/utils/format";
 import Link from "next/link";
 import { FaEdit } from "react-icons/fa";
 
@@ -190,7 +190,7 @@ const SearchConsultation: React.FC<SearchConsultationProps> = ({
                                 <Table.Tr key={consultation.id}>
                                     <Table.Td>{consultation.patient.name}</Table.Td>
                                     <Table.Td>{consultation.doctor.name}</Table.Td>
-                                    <Table.Td>{formatDateTime(new Date(consultation.dateTime))}</Table.Td>
+                                    <Table.Td>{formatDateTime(momentDate(consultation.dateTime).toDate())}</Table.Td>
                                     <Table.Td className="w-full">
                                         <div className="flex gap-6 justify-center items-center">
                                             <Link title="Editar" href={`/consultation/${consultation.id}`}>

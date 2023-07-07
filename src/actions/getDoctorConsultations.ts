@@ -9,12 +9,6 @@ export default async function getDoctorConsultations(doctorId: string) {
             return null
         }
 
-        // const moment = momentDate()
-        // const today = new Date(moment.toDate());
-
-        // console.log(momentDate(momentDate().format('YYYY-MM-DD')).toDate())
-        // console.log(momentDate(momentDate().add(1, 'day').format('YYYY-MM-DD')).toDate())
-
         const consultation = await prisma.consultation.findMany({
             where: {
                 doctorId,

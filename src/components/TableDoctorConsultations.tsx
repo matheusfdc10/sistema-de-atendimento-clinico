@@ -1,6 +1,6 @@
 import { FullConsultationType } from "@/types";
 import Table from "./Table";
-import { formatTime } from "@/utils/format";
+import { formatTime, momentDate } from "@/utils/format";
 import Link from "next/link";
 import { FaNotesMedical } from "react-icons/fa";
 
@@ -24,7 +24,7 @@ const TableDoctorConsultations: React.FC<TableDoctorConsultations> = ({
                 {consultations?.map((consultation) => (
                     <Table.Tr key={consultation.id}>
                         <Table.Td>{consultation.patient.name}</Table.Td>
-                        <Table.Td>{formatTime(new Date(consultation.dateTime))}</Table.Td>
+                        <Table.Td>{formatTime(momentDate(consultation.dateTime).toDate())}</Table.Td>
                         <Table.Td className="w-full">
                             <div className="flex gap-6 justify-center items-center">
                                 <Link title="Fixa" href={'/'}>

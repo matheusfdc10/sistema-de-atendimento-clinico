@@ -1,4 +1,5 @@
 import prisma from '@/libs/prismadb'
+import { momentDate } from '@/utils/format';
 import { getSession } from 'next-auth/react';
 import { NextResponse } from 'next/server'
 
@@ -45,7 +46,7 @@ export async function POST(
         }
 
         if(birthDate) {
-            query.birthDate = new Date(birthDate)
+            query.birthDate = momentDate(birthDate).toDate()
         }
 
         if(gender) {
@@ -68,7 +69,7 @@ export async function POST(
         }
 
         if(nextConsultation) {
-            query.nextConsultation = new Date(nextConsultation)
+            query.nextConsultation = momentDate(nextConsultation).toDate()
         }
 
         const patient = await prisma.patient.findMany({

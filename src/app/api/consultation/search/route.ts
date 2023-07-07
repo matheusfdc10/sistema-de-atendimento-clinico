@@ -1,4 +1,5 @@
 import prisma from '@/libs/prismadb'
+import { momentDate } from '@/utils/format';
 import { getSession } from 'next-auth/react';
 import { NextResponse } from 'next/server'
 
@@ -85,7 +86,7 @@ export async function POST(
         // criar a proxima consulta na tabela consultation ou prescription
 
         if(dateTime) {
-            query.dateTime = new Date(dateTime)
+            query.dateTime = momentDate(dateTime).toDate()
         }
 
         const consultations = await prisma.consultation.findMany({
