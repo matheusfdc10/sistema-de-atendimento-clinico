@@ -9,7 +9,7 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import InputTextMask from "./inputs/InputTextMask";
 import { toast } from "react-hot-toast";
-import { momentDate } from "@/utils/format";
+import { calculateAge, momentDate } from "@/utils/format";
 
 interface NewConsultationProps {
     doctors: Doctor[] | null
@@ -168,41 +168,3 @@ export const selectDoctor = (doctors: Doctor[] | null) => {
 
     return option
 }
-
-
-
-export function calculateAge(dateOfBirth: Date): string {
-    const currentDate: Date = new Date();
-    const currentYear: number = currentDate.getFullYear();
-    const birthYear: number = dateOfBirth.getFullYear();
-    const currentMonth: number = currentDate.getMonth();
-    const birthMonth: number = dateOfBirth.getMonth();
-    const currentDay: number = currentDate.getDate();
-    const birthDay: number = dateOfBirth.getDate();
-  
-    let age: string;
-  
-    // Calculate the difference in years and months
-    const yearDiff: number = currentYear - birthYear;
-    const monthDiff: number = currentMonth - birthMonth;
-  
-    if (yearDiff === 0 && monthDiff === 0) {
-      age = "menos de 1 mês";
-    } else if (yearDiff === 0) {
-      age = `${monthDiff} meses`;
-    } else if (yearDiff === 1 && monthDiff < 0) {
-      age = `${12 - birthMonth + currentMonth} meses`;
-    } else if (yearDiff === 1 && monthDiff === 0 && currentDay < birthDay) {
-      age = `${12 - birthMonth + currentMonth} meses`;
-    } else if (yearDiff === 1) {
-      age = "1 ano";
-    } else if (yearDiff > 1 && monthDiff < 0) {
-      age = `${yearDiff - 1} anos e ${12 - birthMonth + currentMonth} meses`;
-    } else if (yearDiff > 1 && monthDiff === 0 && currentDay < birthDay) {
-      age = `${yearDiff - 1} anos e ${12 - birthMonth + currentMonth} meses`;
-    } else {
-      age = `${yearDiff} anos`;
-    }
-  
-    return age;
-  }

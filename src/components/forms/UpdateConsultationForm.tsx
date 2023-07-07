@@ -11,12 +11,12 @@ import { convertDateHours } from "./UpdatePatientForm";
 import { FullConsultationType } from "@/types";
 import Title from "../Title";
 import Input from "../inputs/Input";
-import { calculateAge, selectDoctor } from "../NewConsultation";
+import { selectDoctor } from "../NewConsultation";
 import Line from "../Line";
 import Textarea from "../inputs/Textarea";
 import Select from "../inputs/Select";
 import InputTextMask from "../inputs/InputTextMask";
-import { momentDate } from "@/utils/format";
+import { calculateAge, momentDate } from "@/utils/format";
 
 interface UpdateConsultationFormProps {
     consultation: FullConsultationType;

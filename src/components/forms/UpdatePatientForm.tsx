@@ -311,7 +311,7 @@ export function convertDateHours(dateString: Date | null) {
     if(!dateString) return ''
 
     // Creating a Date object with the provided date string
-    var date = momentDate(dateString).format('YYYY-MM-YY HH:mm');
+    var date = momentDate(dateString).format('YYYY-MM-DD HH:mm');
     return date
   
     // // Extracting the relevant parts of the date

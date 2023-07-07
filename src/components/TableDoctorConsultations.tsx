@@ -27,7 +27,7 @@ const TableDoctorConsultations: React.FC<TableDoctorConsultations> = ({
                         <Table.Td>{formatTime(momentDate(consultation.dateTime).toDate())}</Table.Td>
                         <Table.Td className="w-full">
                             <div className="flex gap-6 justify-center items-center">
-                                <Link title="Fixa" href={'/'}>
+                                <Link title="Fixa" href={`/consultation/${consultation.id}`}>
                                     <FaNotesMedical className="text-2xl text-sky-500 hover:text-sky-600 cursor-pointer"/>
                                 </Link>
                             </div>
