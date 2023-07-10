@@ -29,5 +29,7 @@ export const config = {
     "/api/consultation",
     "/api/consultation/:path*",
     "/api/consultation/search",
+    "/api/prescription",
+    "/api/prescription/:path*",
   ]
 }

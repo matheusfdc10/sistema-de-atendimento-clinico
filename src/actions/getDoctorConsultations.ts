@@ -12,6 +12,7 @@ export default async function getDoctorConsultations(doctorId: string) {
         const consultation = await prisma.consultation.findMany({
             where: {
                 doctorId,
+                concluded: false,
                 dateTime: {
                     gte: momentDate(momentDate().format('YYYY-MM-DD')).toDate(), // Filtra pela data de hoje ou posterior
                     lt: momentDate(momentDate().add(1, 'day').format('YYYY-MM-DD')).toDate() // Filtra até o final do dia de hoje

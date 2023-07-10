@@ -4,8 +4,7 @@ import Form from "./Form";
 import Input from "./inputs/Input";
 import Textarea from "./inputs/Textarea";
 import Title from "./Title";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { FormPatient } from "./forms/RegisterPatientForm";
+import { FieldValues , SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
@@ -27,33 +26,50 @@ const DoctorConsultation: React.FC<DoctorConsultationProps> = ({
         watch,
         reset,
         setValue,
+        control,
         formState: {
             errors,
         }
-    } = useForm<FormPatient>({
+    } = useForm<FieldValues>({
         defaultValues: {
-
+            diagnosis: '',
+            treatment: '',
+            instructions: '',
+            medications: [{
+                name: '',
+                dosage: '',
+                frequency: '',
+            }]
         }
     })
+    const { fields, append, remove } = useFieldArray({
+        control,
+        name: 'medications'
+    })
 
-    const onSubmit: SubmitHandler<FormPatient> = (data) => {
-        const formattedData: FormPatient = {
-            ...data,
-            // identity: data.identity.replace(/\D/g, ''),
-            // phone: data.phone.replace(/\D/g, ''),
-            // postalCode: data.postalCode.replace(/\D/g, ''),
-        }
-
-        // setIsLoading(true)
-        // axios.put(`/api/doct`, formattedData)
-        // .then(() => {
-        //     toast.success('Cadastrado com sucesso!')
-        //     router.refresh()
-        //     router.push('/')
-        // })
-        // .catch(() => toast.error('Algo deu errado!'))
-        // .finally(() => setIsLoading(false))
+    const onSubmit: SubmitHandler<FieldValues> = (data) => {
+        setIsLoading(true)
+        axios.post(`/api/prescription/${consultation.id}`, data)
+        .then(() => {
+            toast.success('Cadastrado com sucesso!')
+            router.refresh()
+            router.push('/')
+        })
+        .catch(() => toast.error('Algo deu errado!'))
+        .finally(() => setIsLoading(false))
     }
+
+    const addField = () => {
+        append({
+            name: '',
+            dosage: '',
+            frequency: '',
+        })
+    };
+
+    const deleteField = (indice: number) => {
+        remove(indice)
+    };
 
     return (
         <Form.Root onSubmit={handleSubmit(onSubmit)} >
@@ -67,31 +83,57 @@ const DoctorConsultation: React.FC<DoctorConsultationProps> = ({
             <Title title="Prescrição Médica" />
             <Textarea
                 label="Diagnóstico"
+                {...register('diagnosis', { required: true })}
+                errors={errors.diagnosis}
+                disabled={isLoading}
             />
             <Textarea
                 label="Tratamento"
+                {...register('treatment', { required: true })}
+                errors={errors.treatment}
+                disabled={isLoading}
             />
-            <Form.Container>
-                <Input
-                    label="Medicamento"
-                />
-                <Input
-                    label="Dosagem"
-                />
-                <Input
-                    label="Frequência"
-                />
-            </Form.Container>
+            {fields.map((campo, i) => (
+                <Form.Container key={i}>
+                    <Input
+                        label="Medicamento"
+                        {...register(`medications.${i}.name`, { required: true})}
+                        disabled={isLoading}
+                        errors={errors.medications}
+                    />
+                    <Input
+                        label="Dosagem"
+                        {...register(`medications.${i}.dosage`, { required: true})}
+                        disabled={isLoading}
+                        errors={errors.medications}
+                    />
+                    <Input
+                        label="Frequência"
+                        {...register(`medications.${i}.frequency`, { required: true})}
+                        disabled={isLoading}
+                        errors={errors.medications}
+                    />
+                    <div className="self-center">
+                        <Button onClick={() => deleteField(i)}>Excluir</Button>
+                    </div>
+                </Form.Container>
+            ))}
             <div className="flex justify-end">
-                <Button>
+                <Button onClick={addField}>
                     Add medicamento
                 </Button>
             </div>
             <Textarea 
                 label="Instrução"
+                {...register('instructions', { required: true })}
+                errors={errors.instructions}
+                disabled={isLoading}
             />
             <Form.ContainerActions>
-                <Button>
+                <Button 
+                    type="submit"
+                    disabled={isLoading}
+                >
                     Cadastrar
                 </Button>
             </Form.ContainerActions>

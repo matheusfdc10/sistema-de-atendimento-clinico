@@ -36,10 +36,10 @@ const Textarea = forwardRef(
                 <textarea
                     ref={ref}
                     {...props}
-                    onChange={(e) => {
-                        e.target.style.height = '100px';
-                        e.target.style.height = `${e.target.scrollHeight}px`;
-                    }}
+                    // onChange={(e) => {
+                    //     e.target.style.height = '100px';
+                    //     e.target.style.height = `${e.target.scrollHeight}px`;
+                    // }}
                     disabled={disabled}
                     className={clxs(`
                         outline-none
@@ -59,11 +59,10 @@ const Textarea = forwardRef(
                         placeholder:text-neutral-400
                         focus:ring-2
                         focus:ring-inset
-                        focus:ring-sky-600
                         sm:text-sm
                         sm:leading-6
                         disabled:bg-white`,
-                        errors && 'focus:ring-rose-500',
+                        errors ? 'ring-rose-500 ring-2' : 'focus:ring-sky-600',
                         disabled ? 'opacity-80 cursor-not-allowed' : 'cursor-text',
                     )}
                 />

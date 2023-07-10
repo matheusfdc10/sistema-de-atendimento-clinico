@@ -12,11 +12,11 @@ model User {
   name String
   email String @unique
   emailVerified DateTime?
-  image String?
   hashedPassword String
+  role     UserRole @default(DOCTOR)
+  image String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  role     UserRole @default(DOCTOR)
   
   doctor   Doctor?  @relation(fields: [doctorId], references: [id])
   doctorId String?  @db.ObjectId @unique
@@ -67,17 +67,13 @@ model Doctor {
   updatedAt         DateTime  @updatedAt
 
   consultations     Consultation[]
-
-  user    User?
+  user              User?
 }
 
 model Consultation {
   id                     String    @id @default(auto()) @map("_id") @db.ObjectId
-  patient                Patient   @relation(fields: [patientId], references: [id])
-  patientId              String    @db.ObjectId
-  doctor                 Doctor    @relation(fields: [doctorId], references: [id])
-  doctorId               String    @db.ObjectId
   dateTime               DateTime
+  concluded              Boolean @default(false)
   healthInsuranceName    String?
   healthInsuranceNumber  String?
   diagnosis              String?
@@ -86,17 +82,34 @@ model Consultation {
   createdAt              DateTime  @default(now())
   updatedAt              DateTime  @updatedAt
 
+  patient                Patient   @relation(fields: [patientId], references: [id])
+  patientId              String    @db.ObjectId
+  doctor                 Doctor    @relation(fields: [doctorId], references: [id])
+  doctorId               String    @db.ObjectId
+
   prescriptions          Prescription[]
 }
 
 model Prescription {
   id                String    @id @default(auto()) @map("_id") @db.ObjectId
-  consultation      Consultation   @relation(fields: [consultationId], references: [id])
-  consultationId    String    @db.ObjectId
-  medication        String?
-  dosage            String?
-  frequency         String?
   instructions      String
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
+
+  consultation      Consultation   @relation(fields: [consultationId], references: [id])
+  consultationId    String    @db.ObjectId
+
+  medications       Medication[]
+}
+
+model Medication {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  name              String
+  dosage            String
+  frequency         String
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  prescription      Prescription @relation(fields: [prescriptionId], references: [id])
+  prescriptionId    String    @db.ObjectId
 }
