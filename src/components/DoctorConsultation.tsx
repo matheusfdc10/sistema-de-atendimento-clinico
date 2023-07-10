@@ -32,8 +32,8 @@ const DoctorConsultation: React.FC<DoctorConsultationProps> = ({
         }
     } = useForm<FieldValues>({
         defaultValues: {
-            diagnosis: '',
-            treatment: '',
+            diagnosis: consultation.diagnosis,
+            treatment: consultation.treatment,
             instructions: '',
             medications: [{
                 name: '',
